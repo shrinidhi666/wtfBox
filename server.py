@@ -4,6 +4,12 @@ from twisted.internet import reactor
 from twisted.web.resource import Resource
 import re
 import inspect
+import argparse
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument("-p","--path",dest='rootPath',help='root dir of http server')
+args = parser.parse_args()
 
 clientsAllowed = {}
 
@@ -60,8 +66,10 @@ class myfile(File):
     return File.render_GET(self,request)
 
 # resource = File('./')
-
-res = myfile("./")   
+if(args.rootPath):
+  res = myfile(args.rootPath)   
+else:
+  res = myfile("./")
 # print(dir(res))
 factory = Site(res)
 reactor.listenTCP(80, factory)
