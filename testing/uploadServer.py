@@ -28,15 +28,16 @@ class NotRegistered(Resource):
 class UploadDone(Resource):
   isLeaf = True
   allowedMethods = ('POST',)
-  def getChild(self,name,request):
+  def render(self,request):
     print("in getChild of Upload")
+    print(request.getAllHeaders()['dest-dir'])
+    print(request.getAllHeaders()['file-name'])
     return(Resource.render_POST(self,request))
   # def render(self, request):
     # return "<html>Upload Done!</html>"
 
 
 class myfile(File):
-  allowedMethods = ('GET','POST','HEAD')
   def __init__(self,*args):
 
     # try:
@@ -70,9 +71,7 @@ class myfile(File):
         # fw.close()
         return(UploadDone())
       else:
-        test = File.getChild(self,name,request)
-        print(test)
-        return(test)
+        return(File.getChild(self,name,request))
     elif(re.search('^/REGISTER',request.uri)):
       clientsAllowed[request.getClientIP()] = 1
       return(Registered())
