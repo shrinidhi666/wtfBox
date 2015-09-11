@@ -28,8 +28,8 @@ headers = {
            'dest-dir' : destDir, 
            'user-agent' : 'quiMe-fileUploader'
           }
-r = requests.get("http://localhost/REGISTER")
-r = requests.Session()
-res = r.post("http://localhost",files=files, headers = headers, stream=True)
-# res.raw.close()
-print(res.text)
+r = requests.get("http://localhost/REGISTER", headers = headers)
+#r = requests.Session()
+#res = r.post("http://localhost",files=files, headers = headers, stream=True)
+## res.raw.close()
+print(r.text)

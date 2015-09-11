@@ -1,9 +1,9 @@
+#!/usr/bin/python
 from twisted.web.server import Site
 from twisted.web.static import File
 from twisted.internet import reactor
 from twisted.web.resource import Resource
 import re
-import inspect
 import argparse
 
 
@@ -26,22 +26,15 @@ class NotRegistered(Resource):
 
 class myfile(File):
   def __init__(self,*args):
-
-    # try:
-    print("in myfile : "+ str(args))
-    # except:
-    #   pass
     File.__init__(self,*args)
 
-
   def getChild(self, name, request):
-    print("in getChild : "+ str(name) +":"+ str(request))
+    print(request.getClientIP() +" : in getChild : "+ str(name) +":"+ str(request))
     # print(dir(request))
-    print(request.URLPath())
-    print(request.getClientIP())
+    print(request.getClientIP() +" : "+ request.URLPath())
     if(request.getClientIP() in clientsAllowed.keys()):
       test = File.getChild(self,name,request)
-      print(test)
+      print(request.getClientIP() +" : "+ str(test))
       return(test)
     elif(re.search('^/REGISTER',request.uri)):
       clientsAllowed[request.getClientIP()] = 1
@@ -50,27 +43,18 @@ class myfile(File):
       return(NotRegistered())
 
 
-    
-  
-
-
   def render_GET(self,request):
-    # 
     print("----------------------")
     print(request.getClientIP() +" : HEADERS")
     print("----------------------")
-    print(request.getAllHeaders())
-    # for x in request.headers.keys():
-    #   print(x +" : "+ request.headers[x])
+    print(request.getClientIP() +" : "+ str(request.getAllHeaders()))
     print("----------------------")
     return File.render_GET(self,request)
 
-# resource = File('./')
 if(args.rootPath):
   res = myfile(args.rootPath)   
 else:
   res = myfile("./")
-# print(dir(res))
 factory = Site(res)
 reactor.listenTCP(80, factory)
 reactor.run()

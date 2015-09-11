@@ -27,14 +27,14 @@ class NotRegistered(Resource):
 
 class UploadDone(Resource):
   isLeaf = True
-  allowedMethods = ('POST',)
-  def render(self,request):
-    print("in getChild of Upload")
-    print(request.getAllHeaders()['dest-dir'])
-    print(request.getAllHeaders()['file-name'])
-    return(Resource.render_POST(self,request))
-  # def render(self, request):
-    # return "<html>Upload Done!</html>"
+  #allowedMethods = ('POST',)
+  #def render(self,request):
+    #print("in getChild of Upload")
+    #print(request.getAllHeaders()['dest-dir'])
+    #print(request.getAllHeaders()['file-name'])
+    #return(Resource.render(self,request))
+  def render(self, request):
+    return "<html>Upload Done!</html>"
 
 
 class myfile(File):
@@ -57,18 +57,18 @@ class myfile(File):
         print("in post method")
         print(request.getAllHeaders())
         print(request.getAllHeaders()['file-name'])
-        # # print(dir(request))
-        # # print(dir(request.content.file))
-        # # request.content.file.seek(0,0)
-        # try:
-        #   os.makedirs(request.getAllHeaders()['dest-dir'])
-        # except:
-        #   pass
-        # fw = open(request.getAllHeaders()['dest-dir']+ os.sep + request.getAllHeaders()['file-name'],'wb')
-        # # request.content.seek(0,0)
-        # fw.write(request.content.read())
-        # fw.flush()
-        # fw.close()
+        # print(dir(request))
+        # print(dir(request.content.file))
+        # request.content.file.seek(0,0)
+        try:
+          os.makedirs(request.getAllHeaders()['dest-dir'])
+        except:
+          pass
+        fw = open(request.getAllHeaders()['dest-dir']+ os.sep + request.getAllHeaders()['file-name'],'wb')
+        # request.content.seek(0,0)
+        fw.write(request.content.read())
+        fw.flush()
+        fw.close()
         return(UploadDone())
       else:
         return(File.getChild(self,name,request))
