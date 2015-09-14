@@ -23,13 +23,13 @@ else:
   destFileName = "fuckingshit.pdf"
 files = {'file' : open(fileToUpload,'rb')}
 headers = {
-           'content-type' : 'application/octet-stream',
+           'content-type' : 'multipart/form-data',
            'file-name' : destFileName, 
            'dest-dir' : destDir, 
            'user-agent' : 'quiMe-fileUploader'
           }
 r = requests.get("http://localhost/REGISTER", headers = headers)
-#r = requests.Session()
-#res = r.post("http://localhost",files=files, headers = headers, stream=True)
-## res.raw.close()
-print(r.text)
+r.close()
+res = requests.post("http://localhost",files=files, headers = headers)
+
+print(res.text)
