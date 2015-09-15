@@ -67,13 +67,6 @@ def atUrService():
       #content = md5sum:totalchunks:filename:directory:chunksize. directory is relative to the server root
       registerToSend(content)
     if(msg == "upload"):
-      #content = md5sum:chunk:seek:data
+      #content = md5sum:chunk:seek
       upload(content)
-    if(msg == "RESTARTSYS"):
-      RESTARTSYS(clientSocket)
-    if(msg == "CLIENTSTART"):
-      CLIENTSTART(clientSocket)
-    if(msg == "CLEANUPPIDS"):
-      CLEANUPPIDS(clientSocket)
-    if(msg == "SHUTDOWNSYS"):
-      SHUTDOWNSYS(clientSocket)
+    
