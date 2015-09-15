@@ -9,7 +9,7 @@ home = expanduser("~")
 tempDir = tempfile.gettempdir()
 
 delimiterMain = "!@#$%"
-delimiterStart_send  = ":"
+delimiterContent  = ":"
 
 
 uploadContent = {}
@@ -25,7 +25,7 @@ def getLocalNameIP():
       time.sleep(1)
 
 def registerToSend(content):
-  cont = content.split(delimiterStart_send)
+  cont = content.split(delimiterContent)
 
   # md5sum - key , [filename,dirname,seekvalue] - value.
   uploadContent[cont[0]] = [cont[1],cont[2],cont[3]]
@@ -63,11 +63,12 @@ def atUrService():
     else:
       msg = data
     print("I got a connection from "+ str(address) +" : "+ str(data))
-    if(msg == "start_send"):
-      #content = md5sum:filename:directory:seek. directory is relative to the server root
+    if(msg == "register"):
+      #content = md5sum:totalchunks:filename:directory:chunksize. directory is relative to the server root
       registerToSend(content)
-    if(msg == "UPDATE"):
-      UPDATE(clientSocket)
+    if(msg == "upload"):
+      #content = md5sum:chunk:seek:data
+      upload(content)
     if(msg == "RESTARTSYS"):
       RESTARTSYS(clientSocket)
     if(msg == "CLIENTSTART"):
