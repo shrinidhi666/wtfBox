@@ -10,7 +10,7 @@ tempDir = tempfile.gettempdir()
 
 delimiterMain = "!@#$%"
 delimiterContent  = ":"
-
+listenPort = 4567
 
 uploadContent = {}
 
@@ -30,6 +30,8 @@ def registerToSend(content):
   # md5sum - key , [filename,dirname,seekvalue] - value.
   uploadContent[cont[0]] = [cont[1],cont[2],cont[3]]
 
+def upload(content):
+  pass
 
 
 
@@ -40,7 +42,7 @@ def atUrService():
     try:
       hostName,ipAddr = getLocalNameIP()
       serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-      serverSocket.bind(("", constants.clientCtrlListenPort))
+      serverSocket.bind(("", listenPort))
       serverSocket.listen(5)
       break
     except:
