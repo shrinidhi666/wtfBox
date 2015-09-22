@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 5.5.44, for debian-linux-gnu (x86_64)
 --
--- Host: blues2    Database: quiMe
+-- Host: blues2    Database: ouiDevices
 -- ------------------------------------------------------
 -- Server version	5.5.40-log
 
@@ -97,6 +97,19 @@ CREATE TABLE `customers` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `deviceIdTypes`
+--
+
+DROP TABLE IF EXISTS `deviceIdTypes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `deviceIdTypes` (
+  `type` varchar(45) NOT NULL COMMENT 'eg : macc , phone, imei, registration number, etc etc.',
+  PRIMARY KEY (`type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `deviceTypes`
 --
 
@@ -118,29 +131,19 @@ DROP TABLE IF EXISTS `devices`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `devices` (
   `id` varchar(192) NOT NULL,
-  `idType` varchar(45) NOT NULL,
+  `deviceIdType` varchar(45) NOT NULL,
   `manufacturer` varchar(45) NOT NULL,
   `deviceType` varchar(45) NOT NULL,
+  `theBoxId` varchar(192) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `manufacturers_fk_idx` (`manufacturer`),
-  KEY `idType_fk_idx` (`idType`),
+  KEY `idType_fk_idx` (`deviceIdType`),
   KEY `deviceType_idx` (`deviceType`),
+  KEY `fk_devices_1_idx` (`theBoxId`),
+  CONSTRAINT `idType_fk` FOREIGN KEY (`deviceIdType`) REFERENCES `deviceIdTypes` (`type`) ON UPDATE CASCADE,
   CONSTRAINT `deviceType` FOREIGN KEY (`deviceType`) REFERENCES `deviceTypes` (`type`) ON UPDATE CASCADE,
-  CONSTRAINT `idType_fk` FOREIGN KEY (`idType`) REFERENCES `idTypes` (`type`) ON UPDATE CASCADE,
+  CONSTRAINT `fk_devices_1` FOREIGN KEY (`theBoxId`) REFERENCES `theBox` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `manufacturers_fk` FOREIGN KEY (`manufacturer`) REFERENCES `manufacturers` (`manufacturer`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `idTypes`
---
-
-DROP TABLE IF EXISTS `idTypes`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `idTypes` (
-  `type` varchar(45) NOT NULL COMMENT 'eg : macc , phone, imei, registration number, etc etc.',
-  PRIMARY KEY (`type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -174,6 +177,43 @@ CREATE TABLE `states` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `theBox`
+--
+
+DROP TABLE IF EXISTS `theBox`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `theBox` (
+  `id` varchar(192) NOT NULL COMMENT 'generated id',
+  `customerNode` int(11) NOT NULL,
+  `diskSize1` int(11) NOT NULL COMMENT 'in MB',
+  `diskSize2` int(11) DEFAULT NULL,
+  `diskSize3` int(11) DEFAULT NULL,
+  `diskSize4` int(11) DEFAULT NULL,
+  `dateIssued` datetime NOT NULL,
+  `isOnline` int(1) NOT NULL DEFAULT '0',
+  `ip` varchar(15) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_theBox_2_idx` (`customerNode`),
+  CONSTRAINT `fk_theBox_2` FOREIGN KEY (`customerNode`) REFERENCES `customerNodes` (`id`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `theBoxLocation`
+--
+
+DROP TABLE IF EXISTS `theBoxLocation`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `theBoxLocation` (
+  `id` varchar(192) NOT NULL,
+  `geoLocation` varchar(45) NOT NULL,
+  `dateTime` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `zones`
 --
 
@@ -195,4 +235,4 @@ CREATE TABLE `zones` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-09-22  9:13:53
+-- Dump completed on 2015-09-22 18:15:15
