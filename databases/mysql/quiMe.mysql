@@ -1,0 +1,198 @@
+-- MySQL dump 10.13  Distrib 5.5.44, for debian-linux-gnu (x86_64)
+--
+-- Host: blues2    Database: quiMe
+-- ------------------------------------------------------
+-- Server version	5.5.40-log
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `cities`
+--
+
+DROP TABLE IF EXISTS `cities`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `cities` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `country` varchar(128) NOT NULL,
+  `city` varchar(128) NOT NULL,
+  `zone` varchar(8) NOT NULL,
+  `state` varchar(128) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_cities_1_idx` (`country`),
+  KEY `fk_cities_2_idx` (`zone`),
+  KEY `fk_cities_3_idx` (`state`),
+  CONSTRAINT `fk_cities_1` FOREIGN KEY (`country`) REFERENCES `countries` (`country`) ON UPDATE CASCADE,
+  CONSTRAINT `fk_cities_2` FOREIGN KEY (`zone`) REFERENCES `zones` (`zone`) ON UPDATE CASCADE,
+  CONSTRAINT `fk_cities_3` FOREIGN KEY (`state`) REFERENCES `states` (`state`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `countries`
+--
+
+DROP TABLE IF EXISTS `countries`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `countries` (
+  `country` varchar(128) NOT NULL,
+  PRIMARY KEY (`country`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `customerNodes`
+--
+
+DROP TABLE IF EXISTS `customerNodes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `customerNodes` (
+  `id` int(11) NOT NULL,
+  `nodeType` varchar(45) NOT NULL,
+  `address` varchar(1024) NOT NULL,
+  `cityId` int(11) NOT NULL,
+  `geoLocation` varchar(45) DEFAULT NULL,
+  KEY `fk_customerNodes_1_idx` (`id`),
+  KEY `fk_customerNodes_2_idx` (`cityId`),
+  CONSTRAINT `fk_customerNodes_1` FOREIGN KEY (`id`) REFERENCES `customers` (`id`) ON UPDATE CASCADE,
+  CONSTRAINT `fk_customerNodes_2` FOREIGN KEY (`cityId`) REFERENCES `cities` (`id`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `customers`
+--
+
+DROP TABLE IF EXISTS `customers`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `customers` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `lastName` varchar(128) NOT NULL,
+  `firstName` varchar(128) NOT NULL,
+  `companyName` varchar(128) NOT NULL,
+  `tinNo` varchar(128) DEFAULT NULL,
+  `panNo` varchar(128) DEFAULT NULL,
+  `officeAddress` varchar(1024) NOT NULL,
+  `homeAddress` varchar(1024) NOT NULL,
+  `homePhone` varchar(45) NOT NULL,
+  `businessPhone` varchar(45) NOT NULL,
+  `cityId` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_customers_1_idx` (`cityId`),
+  CONSTRAINT `fk_customers_1` FOREIGN KEY (`cityId`) REFERENCES `cities` (`id`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `deviceTypes`
+--
+
+DROP TABLE IF EXISTS `deviceTypes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `deviceTypes` (
+  `type` varchar(45) NOT NULL COMMENT 'eg: pendrive, ssd, router',
+  PRIMARY KEY (`type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `devices`
+--
+
+DROP TABLE IF EXISTS `devices`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `devices` (
+  `id` varchar(192) NOT NULL,
+  `idType` varchar(45) NOT NULL,
+  `manufacturer` varchar(45) NOT NULL,
+  `deviceType` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `manufacturers_fk_idx` (`manufacturer`),
+  KEY `idType_fk_idx` (`idType`),
+  KEY `deviceType_idx` (`deviceType`),
+  CONSTRAINT `deviceType` FOREIGN KEY (`deviceType`) REFERENCES `deviceTypes` (`type`) ON UPDATE CASCADE,
+  CONSTRAINT `idType_fk` FOREIGN KEY (`idType`) REFERENCES `idTypes` (`type`) ON UPDATE CASCADE,
+  CONSTRAINT `manufacturers_fk` FOREIGN KEY (`manufacturer`) REFERENCES `manufacturers` (`manufacturer`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `idTypes`
+--
+
+DROP TABLE IF EXISTS `idTypes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `idTypes` (
+  `type` varchar(45) NOT NULL COMMENT 'eg : macc , phone, imei, registration number, etc etc.',
+  PRIMARY KEY (`type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `manufacturers`
+--
+
+DROP TABLE IF EXISTS `manufacturers`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `manufacturers` (
+  `manufacturer` varchar(45) NOT NULL,
+  PRIMARY KEY (`manufacturer`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `states`
+--
+
+DROP TABLE IF EXISTS `states`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `states` (
+  `state` varchar(128) NOT NULL,
+  `country` varchar(128) NOT NULL,
+  PRIMARY KEY (`state`),
+  KEY `fk_states_1_idx` (`country`),
+  CONSTRAINT `fk_states_1` FOREIGN KEY (`country`) REFERENCES `countries` (`country`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `zones`
+--
+
+DROP TABLE IF EXISTS `zones`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `zones` (
+  `zone` varchar(8) NOT NULL,
+  PRIMARY KEY (`zone`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2015-09-22  9:13:53
