@@ -20,17 +20,17 @@ dbconn = dbOuiDevices.db()
 
 if(args.islist):
   #print("listing all the id types for devices")
-  raw = dbconn.execute("select * from zones",dictionary=True)
+  raw = dbconn.execute("select * from countries",dictionary=True)
   if(not isinstance(raw,int)):
     for x in raw:
       print(x['zone'])
     
 else:
-  if(args.zones):
-    print("adding "+ str(args.zones) +" to database")
-    for x in args.zones.split(","):
+  if(args.country):
+    print("adding "+ str(args.country) +" to database")
+    for x in args.country.split(","):
       if(x):
         try:
-          dbconn.execute("insert into zones (zone) value ('"+ x.rstrip().lstrip() +"')")
+          dbconn.execute("insert into countries (country) value ('"+ x.rstrip().lstrip() +"')")
         except:
           print(str(sys.exc_info()))
