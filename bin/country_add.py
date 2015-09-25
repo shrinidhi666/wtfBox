@@ -13,8 +13,11 @@ sys.path.append(libDir)
 import dbOuiDevices
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-a","--add",dest='country',help='comma seperated countries to add.\nEg:india, china, pakistan')
+parser.add_argument("-c","--country",dest='country',help='comma seperated countries to add.\nEg:india, china, pakistan')
 parser.add_argument("-l","--list",dest='islist',action='store_true',help='list all the countries')
+
+args = parser.parse_args()
+
 
 dbconn = dbOuiDevices.db()
 
@@ -23,7 +26,7 @@ if(args.islist):
   raw = dbconn.execute("select * from countries",dictionary=True)
   if(not isinstance(raw,int)):
     for x in raw:
-      print(x['zone'])
+      print(x['country'])
     
 else:
   if(args.country):
@@ -34,3 +37,7 @@ else:
           dbconn.execute("insert into countries (country) value ('"+ x.rstrip().lstrip() +"')")
         except:
           print(str(sys.exc_info()))
+          sys.exit(1)
+  else:
+    print('country not given!')
+    sys.exit(1)

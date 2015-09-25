@@ -13,7 +13,7 @@ sys.path.append(libDir)
 import dbOuiDevices
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-a","--add",dest='manufacturers',help='comma seperated manufacturers to add.\nEg:asus, intel, dell')
+parser.add_argument("-m","--manufacturers",dest='manufacturers',help='comma seperated manufacturers to add.\nEg:asus, intel, dell')
 parser.add_argument("-l","--list",dest='islist',action='store_true',help='list all the manufacturers')
 args = parser.parse_args()
 

@@ -14,7 +14,7 @@ sys.path.append(libDir)
 import dbOuiDevices
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-a","--add",dest='idtypes',help='comma seperated id types to add.\nEg:generated, registrationid, imei')
+parser.add_argument("-i","--idtypes",dest='idtypes',help='comma seperated id types to add.\nEg:generated, registrationid, imei')
 parser.add_argument("-l","--list",dest='islist',action='store_true',help='list all the id types used for devices')
 args = parser.parse_args()
 

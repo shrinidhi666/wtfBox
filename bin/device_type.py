@@ -13,7 +13,7 @@ sys.path.append(libDir)
 import dbOuiDevices
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-a","--add",dest='deviceTypes',help='comma seperated device types to add.\nEg:pendrive, harddisk, gps dongle')
+parser.add_argument("-t","--types",dest='deviceTypes',help='comma seperated device types to add.\nEg:pendrive, harddisk, gps dongle')
 parser.add_argument("-l","--list",dest='islist',action='store_true',help='list all the manufacturers')
 args = parser.parse_args()
 

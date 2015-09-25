@@ -13,8 +13,10 @@ sys.path.append(libDir)
 import dbOuiDevices
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-a","--add",dest='zones',help='comma seperated zones to add.\nEg:southwest, northeast, northwest')
+parser.add_argument("-z","--zones",dest='zones',help='comma seperated zones to add.\nEg:southwest, northeast, northwest')
 parser.add_argument("-l","--list",dest='islist',action='store_true',help='list all the zones')
+args = parser.parse_args()
+
 
 dbconn = dbOuiDevices.db()
 
