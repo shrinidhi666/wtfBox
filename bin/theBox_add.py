@@ -14,8 +14,28 @@ import dbOuiDevices
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-i","--id",dest='id',help='id of the device')
-parser.add_argument("-t","--idtype",dest='idtype',help='device id type.Use device_idType command to know more')
-parser.add_argument("-m","--manufacturer",dest='manufacturer',help='device manufacturer.Use device_manufacturer command to know more')
-parser.add_argument("-y","--type",dest='type',help='device type.Use device_type command to know more')
+parser.add_argument("-l","--list",dest='islist',action='store_true',help='list all the cities')
+
 args = parser.parse_args()
+
+if(args.islist):
+  #print("listing all the id types for devices")
+  raw = dbconn.execute("select * from theBox",dictionary=True)
+  if(not isinstance(raw,int)):
+    for x in raw:
+      print(x['id'] +":"+ x['clientNodeId'] +":"+ x['clientNodeId'])
+    
+else:
+  if(args.id):
+    print("adding "+ str(args.id) +" to database")
+    for x in args.id.split(","):
+      if(x):
+        try:
+          dbconn.execute("insert into theBox (id) value ('"+ x.rstrip().lstrip() +"')")
+        except:
+          print(str(sys.exc_info()))
+          sys.exit(1)
+  else:
+    print('id not given!')
+    sys.exit(1)
 
