@@ -26,7 +26,7 @@ if(args.islist):
   if(not isinstance(raw,int)):
     for x in raw:
       print(x['zone'])
-    
+
 else:
   if(args.zones):
     print("adding "+ str(args.zones) +" to database")
@@ -36,6 +36,3 @@ else:
           dbconn.execute("insert into zones (zone) value ('"+ x.rstrip().lstrip() +"')")
         except:
           print(str(sys.exc_info()))
-          
-      
-
