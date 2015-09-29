@@ -7,7 +7,7 @@ import json
 
 
 dirSelf = os.path.dirname(os.path.realpath(__file__))
-libDir = dirSelf.rstrip(os.sep).rstrip("bin").rstrip(os.sep) + os.sep + "lib"
+libDir = dirSelf.rstrip(os.sep).rstrip("tools").rstrip(os.sep).rstrip("bin").rstrip(os.sep) + os.sep + "lib"
 sys.path.append(libDir)
 #print("lib : "+ libDir)
 
