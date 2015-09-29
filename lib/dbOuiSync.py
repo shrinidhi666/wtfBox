@@ -39,7 +39,7 @@ class db:
     except:
       print(str(sys.exc_info()))
     #print("Db connection closed" +"\n")
-  
+
   def _connDb(self,hostname,port,dbname):
     try:
       conn = MySQLdb.connect(host = hostname,port=port,db = dbname)
@@ -47,7 +47,7 @@ class db:
     except:
       raise
     return(conn)
-    
+
   def _connect(self):
     while(1):
       try:
@@ -57,8 +57,8 @@ class db:
       except:
         print("Db not connected : "+ str(sys.exc_info()))
       time.sleep(1)
-      
-       
+
+
   def execute(self,query,dictionary=False):
     while(1):
       try:
@@ -73,7 +73,7 @@ class db:
             rows = cur.fetchall()
           except:
             print("fetching failed : "+ str(sys.exc_info()))
-          
+
           cur.close()
           if(rows):
             return(rows)

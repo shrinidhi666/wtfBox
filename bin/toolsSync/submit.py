@@ -11,6 +11,7 @@ sys.path.append(libDir)
 # print("lib : "+ libDir)
 
 import dbOuiDevices
+import dbOuiSync
 
 
 parser = argparse.ArgumentParser()
@@ -20,4 +21,11 @@ parser.add_argument("-l","--list",dest='islist',action='store_true',help='list a
 args = parser.parse_args()
 
 
-dbconn = dbOuiDevices.db()
+dbconnDevices = dbOuiDevices.db()
+dbconnSync = dbOuiSync.db()
+
+
+raw = dbconnDevices.execute("select * from theBox",dictionary=True)
+if(not isinstance(raw,int)):
+  for x in raw:
+    print(x['id'] +":"+ x['clientNodeId'] +":"+ x['ip'] +":"+ x['isOnline'])
