@@ -17,15 +17,18 @@ import dbOuiSync
 parser = argparse.ArgumentParser()
 parser.add_argument("-i","--boxid",dest='boxid',help='boxid to sync')
 parser.add_argument("-p","--path",dest='path',help='path to sync')
-parser.add_argument("-l","--list",dest='islist',action='store_true',help='list all the zones')
+parser.add_argument("-l","--list",dest='islist',action='store_true',help='list all syncs')
 args = parser.parse_args()
 
 
 dbconnDevices = dbOuiDevices.db()
 dbconnSync = dbOuiSync.db()
 
-
-raw = dbconnDevices.execute("select * from theBox",dictionary=True)
-if(not isinstance(raw,int)):
-  for x in raw:
-    print(x['id'] +":"+ x['clientNodeId'] +":"+ x['ip'] +":"+ x['isOnline'])
+if(args.boxid):
+  try:
+    raw = dbconnDevices.execute("select * from theBox",dictionary=True)
+    if(not isinstance(raw,int)):
+      for x in raw:
+        print(str(x['id']) +":"+ str(x['clientNodeId']) +":"+ str(x['ip']) +":"+ str(x['isOnline']))
+  except:
+    print(str(sys.exc_info()))

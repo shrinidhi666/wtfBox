@@ -18,13 +18,15 @@ parser.add_argument("-l","--list",dest='islist',action='store_true',help='list a
 
 args = parser.parse_args()
 
+dbconn = dbOuiDevices.db()
+
 if(args.islist):
   #print("listing all the id types for devices")
   raw = dbconn.execute("select * from theBox",dictionary=True)
   if(not isinstance(raw,int)):
     for x in raw:
       print(x['id'] +":"+ x['clientNodeId'] +":"+ x['ip'] +":"+ x['isOnline'])
-    
+
 else:
   if(args.id):
     print("adding "+ str(args.id) +" to database")
@@ -38,4 +40,3 @@ else:
   else:
     print('id not given!')
     sys.exit(1)
-

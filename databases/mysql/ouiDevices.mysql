@@ -23,19 +23,81 @@ DROP TABLE IF EXISTS `cities`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `cities` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `country` varchar(128) NOT NULL,
-  `city` varchar(128) NOT NULL,
-  `zone` varchar(8) NOT NULL,
-  `state` varchar(128) NOT NULL,
-  PRIMARY KEY (`id`),
+  `city` varchar(48) NOT NULL,
+  `state` varchar(48) NOT NULL,
+  `country` varchar(48) NOT NULL,
+  `zone` varchar(8) DEFAULT NULL,
+  PRIMARY KEY (`city`,`state`,`country`),
   KEY `fk_cities_1_idx` (`country`),
   KEY `fk_cities_2_idx` (`zone`),
-  KEY `fk_cities_3_idx` (`state`),
+  KEY `fk_cities_2_idx1` (`state`),
   CONSTRAINT `fk_cities_1` FOREIGN KEY (`country`) REFERENCES `countries` (`country`) ON UPDATE CASCADE,
-  CONSTRAINT `fk_cities_2` FOREIGN KEY (`zone`) REFERENCES `zones` (`zone`) ON UPDATE CASCADE,
-  CONSTRAINT `fk_cities_3` FOREIGN KEY (`state`) REFERENCES `states` (`state`) ON UPDATE CASCADE
+  CONSTRAINT `fk_cities_2` FOREIGN KEY (`state`) REFERENCES `states` (`state`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `clientNodes`
+--
+
+DROP TABLE IF EXISTS `clientNodes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `clientNodes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `clientId` int(11) DEFAULT NULL,
+  `name` varchar(128) DEFAULT NULL,
+  `firstName` varchar(45) DEFAULT NULL,
+  `lastName` varchar(45) DEFAULT NULL,
+  `officeAddress` varchar(1024) DEFAULT NULL,
+  `homeAddress` varchar(1024) DEFAULT NULL,
+  `officePhone` varchar(45) DEFAULT NULL,
+  `homePhone` varchar(45) DEFAULT NULL,
+  `country` varchar(48) DEFAULT NULL,
+  `state` varchar(48) DEFAULT NULL,
+  `city` varchar(48) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_clientNodes_1_idx` (`id`),
+  KEY `fk_clientNodes_1_idx1` (`clientId`),
+  KEY `fk_clientNodes_country_idx` (`country`),
+  KEY `fk_clientNodes_state_idx` (`state`),
+  KEY `fk_clientNodes_city_idx` (`city`),
+  CONSTRAINT `fk_clientNodes_state` FOREIGN KEY (`state`) REFERENCES `states` (`state`) ON UPDATE CASCADE,
+  CONSTRAINT `fk_clientNodes_city` FOREIGN KEY (`city`) REFERENCES `cities` (`city`) ON UPDATE CASCADE,
+  CONSTRAINT `fk_clientNodes_1` FOREIGN KEY (`clientId`) REFERENCES `clients` (`id`) ON UPDATE CASCADE,
+  CONSTRAINT `fk_clientNodes_country` FOREIGN KEY (`country`) REFERENCES `countries` (`country`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `clients`
+--
+
+DROP TABLE IF EXISTS `clients`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `clients` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(128) DEFAULT NULL,
+  `country` varchar(48) DEFAULT NULL,
+  `state` varchar(48) DEFAULT NULL,
+  `city` varchar(48) DEFAULT NULL,
+  `lastName` varchar(128) DEFAULT NULL,
+  `firstName` varchar(128) DEFAULT NULL,
+  `tinNo` varchar(128) DEFAULT NULL,
+  `panNo` varchar(128) DEFAULT NULL,
+  `officeAddress` varchar(1024) DEFAULT NULL,
+  `homeAddress` varchar(1024) DEFAULT NULL,
+  `homePhone` varchar(45) DEFAULT NULL,
+  `officePhone` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_customers_1_idx` (`country`),
+  KEY `state_fk_idx` (`state`),
+  KEY `city_fk_idx` (`city`),
+  CONSTRAINT `fk_clients_city` FOREIGN KEY (`city`) REFERENCES `cities` (`city`) ON UPDATE CASCADE,
+  CONSTRAINT `fk_clients_country` FOREIGN KEY (`country`) REFERENCES `countries` (`country`) ON UPDATE CASCADE,
+  CONSTRAINT `fk_clients_state` FOREIGN KEY (`state`) REFERENCES `states` (`state`) ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -46,53 +108,8 @@ DROP TABLE IF EXISTS `countries`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `countries` (
-  `country` varchar(128) NOT NULL,
+  `country` varchar(48) NOT NULL,
   PRIMARY KEY (`country`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `customerNodes`
---
-
-DROP TABLE IF EXISTS `customerNodes`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `customerNodes` (
-  `id` int(11) NOT NULL,
-  `nodeType` varchar(45) NOT NULL,
-  `address` varchar(1024) NOT NULL,
-  `cityId` int(11) NOT NULL,
-  `geoLocation` varchar(45) DEFAULT NULL,
-  KEY `fk_customerNodes_1_idx` (`id`),
-  KEY `fk_customerNodes_2_idx` (`cityId`),
-  CONSTRAINT `fk_customerNodes_1` FOREIGN KEY (`id`) REFERENCES `customers` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `fk_customerNodes_2` FOREIGN KEY (`cityId`) REFERENCES `cities` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `customers`
---
-
-DROP TABLE IF EXISTS `customers`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `customers` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `lastName` varchar(128) NOT NULL,
-  `firstName` varchar(128) NOT NULL,
-  `companyName` varchar(128) NOT NULL,
-  `tinNo` varchar(128) DEFAULT NULL,
-  `panNo` varchar(128) DEFAULT NULL,
-  `officeAddress` varchar(1024) NOT NULL,
-  `homeAddress` varchar(1024) NOT NULL,
-  `homePhone` varchar(45) NOT NULL,
-  `businessPhone` varchar(45) NOT NULL,
-  `cityId` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_customers_1_idx` (`cityId`),
-  CONSTRAINT `fk_customers_1` FOREIGN KEY (`cityId`) REFERENCES `cities` (`id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -140,9 +157,9 @@ CREATE TABLE `devices` (
   KEY `idType_fk_idx` (`deviceIdType`),
   KEY `deviceType_idx` (`deviceType`),
   KEY `fk_devices_1_idx` (`theBoxId`),
-  CONSTRAINT `idType_fk` FOREIGN KEY (`deviceIdType`) REFERENCES `deviceIdTypes` (`type`) ON UPDATE CASCADE,
   CONSTRAINT `deviceType` FOREIGN KEY (`deviceType`) REFERENCES `deviceTypes` (`type`) ON UPDATE CASCADE,
   CONSTRAINT `fk_devices_1` FOREIGN KEY (`theBoxId`) REFERENCES `theBox` (`id`) ON UPDATE CASCADE,
+  CONSTRAINT `idType_fk` FOREIGN KEY (`deviceIdType`) REFERENCES `deviceIdTypes` (`type`) ON UPDATE CASCADE,
   CONSTRAINT `manufacturers_fk` FOREIGN KEY (`manufacturer`) REFERENCES `manufacturers` (`manufacturer`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -168,9 +185,9 @@ DROP TABLE IF EXISTS `states`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `states` (
-  `state` varchar(128) NOT NULL,
-  `country` varchar(128) NOT NULL,
-  PRIMARY KEY (`state`),
+  `state` varchar(48) NOT NULL,
+  `country` varchar(48) NOT NULL,
+  PRIMARY KEY (`state`,`country`),
   KEY `fk_states_1_idx` (`country`),
   CONSTRAINT `fk_states_1` FOREIGN KEY (`country`) REFERENCES `countries` (`country`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -185,17 +202,17 @@ DROP TABLE IF EXISTS `theBox`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `theBox` (
   `id` varchar(192) NOT NULL COMMENT 'generated id',
-  `customerNode` int(11) NOT NULL,
-  `diskSize1` int(11) NOT NULL COMMENT 'in MB',
-  `diskSize2` int(11) DEFAULT NULL,
-  `diskSize3` int(11) DEFAULT NULL,
-  `diskSize4` int(11) DEFAULT NULL,
-  `dateIssued` datetime NOT NULL,
-  `isOnline` int(1) NOT NULL DEFAULT '0',
+  `clientNodeId` int(11) DEFAULT NULL,
+  `diskSize1Total` int(11) DEFAULT NULL COMMENT 'in MB',
+  `diskSize1Free` int(11) DEFAULT NULL,
+  `diskSize2Total` int(11) DEFAULT NULL,
+  `diskSize2Free` int(11) DEFAULT NULL,
+  `dateIssued` datetime DEFAULT NULL,
+  `isOnline` int(1) DEFAULT '0',
   `ip` varchar(15) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_theBox_2_idx` (`customerNode`),
-  CONSTRAINT `fk_theBox_2` FOREIGN KEY (`customerNode`) REFERENCES `customerNodes` (`id`) ON UPDATE CASCADE
+  KEY `fk_theBox_fk_idx` (`clientNodeId`),
+  CONSTRAINT `fk_theBox_fk` FOREIGN KEY (`clientNodeId`) REFERENCES `clientNodes` (`id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -235,4 +252,4 @@ CREATE TABLE `zones` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-09-22 18:15:15
+-- Dump completed on 2015-09-30  6:35:16
