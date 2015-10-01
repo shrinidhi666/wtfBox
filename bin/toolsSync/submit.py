@@ -18,26 +18,28 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-i","--boxid",dest='boxid',help='boxid to sync')
 parser.add_argument("-p","--path",dest='path',help='path to sync')
 parser.add_argument("-l","--list",dest='islist',action='store_true',help='list all syncs')
+parser.add_argument("-b","--listBox",dest='islistbox',action='store_true',help='list all box ids')
 args = parser.parse_args()
 
 
 dbconnDevices = dbOuiDevices.db()
 dbconnSync = dbOuiSync.db()
-raw = dbconnDevices.execute("select * from theBox",dictionary=True)
+rawBoxes = dbconnDevices.execute("select * from theBox",dictionary=True)
 rawSyncs = dbconnSync.execute("select * from tasks",dictionary=True)
 
 if(args.islist):
-  try:
-    if(not isinstance(rawSyncs,int)):
-      for x in rawSyncs:
-    	 print(str(x['id']) +":"+ str(x['clientNodeId']) +":"+ str(x['ip']) +":"+ str(x['isOnline']))
-  except:
-    print(str(sys.exc_info()))
+  if(not isinstance(rawSyncs,int)):
+    for x in rawSyncs:
+  	 print(str(x['theBoxId']) +":"+ str(x['path']))
+elif(args.islistbox):
+  if(not isinstance(rawBoxes,int)):
+    for x in rawBoxes:
+      print(x['id'] +":"+ x['clientNodeId'] +":"+ x['ip'] +":"+ x['isOnline'])
 else:
   if(args.boxid):
     found = False
-    if(not isinstance(rawSyncs,int)):
-      for x in rawSyncs:
+    if(not isinstance(rawBoxes,int)):
+      for x in rawBoxes:
         if(str(args.boxid).rstrip().lstrip() == str(x['id'])):
           found = True
     if(found == True):
