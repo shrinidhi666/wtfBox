@@ -23,12 +23,36 @@ args = parser.parse_args()
 
 dbconnDevices = dbOuiDevices.db()
 dbconnSync = dbOuiSync.db()
+raw = dbconnDevices.execute("select * from theBox",dictionary=True)
+rawSyncs = dbconnSync.execute("select * from tasks",dictionary=True)
 
-if(args.boxid):
+if(args.islist):
   try:
-    raw = dbconnDevices.execute("select * from theBox",dictionary=True)
-    if(not isinstance(raw,int)):
-      for x in raw:
-        print(str(x['id']) +":"+ str(x['clientNodeId']) +":"+ str(x['ip']) +":"+ str(x['isOnline']))
+    if(not isinstance(rawSyncs,int)):
+      for x in rawSyncs:
+    	 print(str(x['id']) +":"+ str(x['clientNodeId']) +":"+ str(x['ip']) +":"+ str(x['isOnline']))
   except:
     print(str(sys.exc_info()))
+else:
+  if(args.boxid):
+    found = False
+    if(not isinstance(rawSyncs,int)):
+      for x in rawSyncs:
+        if(str(args.boxid).rstrip().lstrip() == str(x['id'])):
+          found = True
+    if(found == True):
+      if(args.path):
+        try:
+          dbconnSync.execute("insert into tasks (theBoxId,path) value ('"+ str(args.boxid).rstrip().lstrip() +"','"+ str(args.path).rstrip().lstrip() +"')")
+        except:
+          print(str(sys.exc_info()))
+      else:
+        print("path not given!")
+  else:
+    print("box id not given!")
+
+
+      
+
+
+		

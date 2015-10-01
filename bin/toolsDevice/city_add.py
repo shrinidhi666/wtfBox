@@ -35,7 +35,7 @@ else:
         for x in args.cities.split(","):
           if(x):
             try:
-              dbconn.execute("insert into cities (city,country,state) value ('"+ x.rstrip().lstrip() +"','"+ args.country +"','"+ args.state +"')")
+              dbconn.execute("insert into cities (city,country,state) value ('"+ str(x).rstrip().lstrip() +"','"+ str(args.country).rstrip().lstrip() +"','"+ str(args.state).rstrip().lstrip() +"')")
             except:
               print(str(sys.exc_info()))
               sys.exit(1)
