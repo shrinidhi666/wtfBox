@@ -27,6 +27,13 @@ dbconnSync = dbOuiSync.db()
 rawBoxes = dbconnDevices.execute("select * from theBox",dictionary=True)
 rawSyncs = dbconnSync.execute("select * from tasks",dictionary=True)
 
+def getFiles(path):
+  a  = os.walk(path)
+  for root,dirs,files in a:
+    for b in files:
+      
+
+
 if(args.islist):
   if(not isinstance(rawSyncs,int)):
     for x in rawSyncs:
