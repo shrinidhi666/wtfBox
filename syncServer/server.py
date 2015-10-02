@@ -12,3 +12,5 @@ sys.path.append(libDir)
 
 import dbOuiDevices
 import dbOuiSync
+
+rsync = "rsync -v --relative --recursive --append --inplace --checksum --copy-links --xattrs --perms --progress --delete-after --rsh=/usr/bin/ssh" + " testinglinks blue0002:/tmp/"
