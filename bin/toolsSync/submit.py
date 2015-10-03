@@ -36,8 +36,11 @@ def getFiles(path,theBoxId):
       bchecksum = str(sha512sum.checksum(os.path.join(os.path.abspath(root),b))).rstrip().lstrip()
       bpath = str(os.path.join(root,b)).replace(rootpath, "").lstrip(".").lstrip(os.sep).rstrip().lstrip()
       print(bchecksum +":"+ rootpath +":"+ bpath)
-
-      # dbconnSync.execute("insert into taskJobs (theBoxId,checksum,rootPath) value ('"+ str(args.boxid).rstrip().lstrip() +"','"+ str(args.path).rstrip().lstrip() +"')")
+      try:
+        dbconnSync.execute("insert into taskJobs (theBoxId,checksum,rootPath,file) value ('"+ str(theBoxId).rstrip().lstrip() +"','"+ str(bchecksum).rstrip().lstrip() +"','"+ str(rootpath).rstrip().lstrip() +"','"+ str(bpath).rstrip().lstrip() +"')")
+      except:
+        print(str(sys.exc_info()))
+        
 
       
 
