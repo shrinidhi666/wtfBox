@@ -12,6 +12,7 @@ sys.path.append(libDir)
 
 import dbOuiDevices
 import dbOuiSync
+import sha512sum
 
 
 parser = argparse.ArgumentParser()
@@ -27,10 +28,17 @@ dbconnSync = dbOuiSync.db()
 rawBoxes = dbconnDevices.execute("select * from theBox",dictionary=True)
 rawSyncs = dbconnSync.execute("select * from tasks",dictionary=True)
 
-def getFiles(path):
+def getFiles(path,theBoxId):
+  rootpath = os.path.abspath(path)
   a  = os.walk(path)
   for root,dirs,files in a:
     for b in files:
+      bchecksum = str(sha512sum.checksum(os.path.join(os.path.abspath(root),b))).rstrip().lstrip()
+      bpath = str(os.path.join(root,b)).replace(rootpath, "").lstrip(".").lstrip(os.sep).rstrip().lstrip()
+      print(bchecksum +":"+ rootpath +":"+ bpath)
+
+      # dbconnSync.execute("insert into taskJobs (theBoxId,checksum,rootPath) value ('"+ str(args.boxid).rstrip().lstrip() +"','"+ str(args.path).rstrip().lstrip() +"')")
+
       
 
 
@@ -51,6 +59,7 @@ else:
           found = True
     if(found == True):
       if(args.path):
+        getFiles(args.path,args.boxid)
         try:
           dbconnSync.execute("insert into tasks (theBoxId,path) value ('"+ str(args.boxid).rstrip().lstrip() +"','"+ str(args.path).rstrip().lstrip() +"')")
         except:

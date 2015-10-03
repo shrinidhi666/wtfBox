@@ -25,7 +25,7 @@ if(args.islist):
   raw = dbconn.execute("select * from theBox",dictionary=True)
   if(not isinstance(raw,int)):
     for x in raw:
-      print(x['id'] +":"+ x['clientNodeId'] +":"+ x['ip'] +":"+ x['isOnline'])
+      print(str(x['id']).rstrip().lstrip() +":"+ str(x['clientNodeId']).rstrip().lstrip() +":"+ str(x['ip']).rstrip().lstrip() +":"+ str(x['isOnline']).rstrip().lstrip())
 
 else:
   if(args.id):
