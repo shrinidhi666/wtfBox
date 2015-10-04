@@ -17,7 +17,8 @@ import sha512sum
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-i","--boxid",dest='boxid',help='boxid to sync')
-parser.add_argument("-p","--path",dest='path',help='path to sync')
+parser.add_argument("-p","--path",dest='path',help='root path to sync')
+parser.add_argument("-d","--destinationpath",dest='destpath',help='destination root path to sync')
 parser.add_argument("-l","--list",dest='islist',action='store_true',help='list all syncs')
 parser.add_argument("-b","--listBox",dest='islistbox',action='store_true',help='list all box ids')
 args = parser.parse_args()
@@ -28,7 +29,7 @@ dbconnSync = dbOuiSync.db()
 rawBoxes = dbconnDevices.execute("select * from theBox",dictionary=True)
 rawSyncs = dbconnSync.execute("select * from tasks",dictionary=True)
 
-def getFiles(path,theBoxId):
+def getFiles(path,destpath,theBoxId):
   rootpath = os.path.abspath(path)
   a  = os.walk(path)
   for root,dirs,files in a:
@@ -37,7 +38,7 @@ def getFiles(path,theBoxId):
       bpath = str(os.path.join(root,b)).replace(rootpath, "").lstrip(".").lstrip(os.sep).rstrip().lstrip()
       print(bchecksum +":"+ rootpath +":"+ bpath)
       try:
-        dbconnSync.execute("insert into taskJobs (theBoxId,checksum,rootPath,file) value ('"+ str(theBoxId).rstrip().lstrip() +"','"+ str(bchecksum).rstrip().lstrip() +"','"+ str(rootpath).rstrip().lstrip() +"','"+ str(bpath).rstrip().lstrip() +"')")
+        dbconnSync.execute("insert into taskJobs (theBoxId,checksum,path,destinationpath,file) value ('"+ str(theBoxId).rstrip().lstrip() +"','"+ str(bchecksum).rstrip().lstrip() +"','"+ str(rootpath).rstrip().lstrip() +"','"+ str(destpath).rstrip().lstrip() +"','"+ str(bpath).rstrip().lstrip() +"')")
       except:
         print(str(sys.exc_info()))
         
@@ -52,7 +53,7 @@ if(args.islist):
 elif(args.islistbox):
   if(not isinstance(rawBoxes,int)):
     for x in rawBoxes:
-      print(x['id'] +":"+ x['clientNodeId'] +":"+ x['ip'] +":"+ x['isOnline'])
+      print(str(x['id']).rstrip().lstrip() +":"+ str(x['clientNodeId']).rstrip().lstrip() +":"+ str(x['ip']).rstrip().lstrip() +":"+ str(x['isOnline']).rstrip().lstrip())
 else:
   if(args.boxid):
     found = False
@@ -62,11 +63,14 @@ else:
           found = True
     if(found == True):
       if(args.path):
-        getFiles(args.path,args.boxid)
-        try:
-          dbconnSync.execute("insert into tasks (theBoxId,path) value ('"+ str(args.boxid).rstrip().lstrip() +"','"+ str(args.path).rstrip().lstrip() +"')")
-        except:
-          print(str(sys.exc_info()))
+        if(args.destpath):
+          getFiles(args.path,args.destpath,args.boxid)
+          try:
+            dbconnSync.execute("insert into tasks (theBoxId,path,destinationpath) value ('"+ str(args.boxid).rstrip().lstrip() +"','"+ str(args.path).rstrip().lstrip() +"','"+ str(args.destpath).rstrip().lstrip() +"')")
+          except:
+            print(str(sys.exc_info()))
+        else:
+          print("destination path not given!")
       else:
         print("path not given!")
   else:
