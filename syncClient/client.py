@@ -6,6 +6,7 @@ import socket
 import snowflake
 import multiprocessing
 from multiprocessing import Pool
+import time
 
 
 dirSelf = os.path.dirname(os.path.realpath(__file__))
@@ -15,6 +16,7 @@ sys.path.append(libDir)
 
 import dbOuiDevices
 import dbOuiSync
+import constants 
 
 dbconnDevices = dbOuiDevices.db()
 dbconnSync = dbOuiSync.db()
@@ -25,6 +27,44 @@ rawTaskJobs = dbconnSync.execute("select * from taskJobs",dictionary=True)
 rsync = "rsync -v --relative --recursive --append --inplace --checksum --copy-links --xattrs --perms --progress --rsh=/usr/bin/ssh"
 #--delete-after
 
+def clientPort():
+  while(1):
+    try:
+      hostName,ipAddr = getLocalNameIP()
+      serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+      serverSocket.bind(("", 8895))
+      serverSocket.listen(5)
+      break
+    except:
+      print(str(sys.exc_info()))
+      if(str(sys.exc_info()).find('Address already in use') >= 0):
+        break
+    time.sleep(1)
+  while(1):
+    clientSocket, address = serverSocket.accept()
+    data = ""
+    data = clientSocket.recv(1024)
+    data = data.rstrip()
+    data = data.lstrip()
+    if(data == "ISALIVE"):
+      clientSocket.send("ALIVE")
+    clientSocket.close()
+
+
+
+
+
+
+
+def getLocalNameIP():
+  while(1):
+    try:
+      hostname = socket.gethostname()
+      ipAddr = socket.gethostbyname(socket.gethostname()).strip()
+      return(hostname,ipAddr)
+    except:
+      print(str(sys.exc_info()))
+      time.sleep(1)
 
 
 def getLocalIDIP():
@@ -43,15 +83,15 @@ def getLocalIDIP():
 def update():
   hostid , ip, totalCpus = getLocalIDIP()
   try:
-    dbconnSync.execute("insert into hosts (hostid,ip,cpuTotal) value ('"+ str(hostid).rstrip().lstrip() +"','"+ str(ip).rstrip().lstrip() +"','"+ str(totalCpus).rstrip().lstrip() +"')")
+    dbconnSync.execute("insert into hosts (hostid,ip,cpuTotal,isAlive) value ('"+ str(hostid).rstrip().lstrip() +"','"+ str(ip).rstrip().lstrip() +"','"+ str(totalCpus).rstrip().lstrip() +"','"+ str(constants.ouiSync_hosts_isAlive_online) +"')")
   except:
     print(str(sys.exc_info()))
 
 
-def doSync(syncDict,procPool):
+def doSync(syncDict):
   hostid , ip, totalCpus = getLocalIDIP()
   try:
-    dbconnSync.execute("update taskJobs set status = 2 where hostid = '"+ str(hostid) +"' and theBoxId = '"+ str(syncDict['theBoxId']) +"' and checksum = '"+ str(syncDict['checksum']) +"'")
+    dbconnSync.execute("update taskJobs set status = "+ str(constants.ouiSync_taskJobs_status_running) +" where hostid = '"+ str(hostid) +"' and theBoxId = '"+ str(syncDict['theBoxId']) +"' and checksum = '"+ str(syncDict['checksum']) +"'")
   except:
     print(str(sys.exc_info()))
 
@@ -59,7 +99,11 @@ def doSync(syncDict,procPool):
   if(not isinstance(rawBoxes,int)):
     thebox = rawBoxes[-1]
     rsynccmd = rsync +" \""+ syncDict['file'] +"\" "+ thebox['ip'] +":"+ syncDict['destinationPath']
-    out = os.system(rsynccmd)
+    try:
+      out = os.system(rsynccmd)
+    except:
+      print(str(sys.exc_info()))
+    dbconnSync.execute("update taskJobs set status = 3 where theBoxId = '"+ str(syncDict['theBoxId']) +"' and checksum = '"+ str(syncDict['checksum']) +"'")
     print("exit status of the sync : "+ str(out))
     
 
@@ -71,10 +115,17 @@ def doSync(syncDict,procPool):
 def doSyncProcess():
   hostid , ip, totalCpus = getLocalIDIP()
   procpool = Pool(processes=int(totalCpus))
-  try:
-    taskJobsAssigned = dbconnSync.execute("select * from taskJobs where status = 1 and hostid = '"+ str(hostid) +"'",dictionary=True)
-    if(not isinstance(taskJobsAssigned,int)):
-      for x in taskJobsAssigned:
+  jobs = []
+  while (1):
+    try:
+      taskJobsAssigned = dbconnSync.execute("select * from taskJobs where status = 1 and hostid = '"+ str(hostid) +"'",dictionary=True)
+      if(not isinstance(taskJobsAssigned,int)):
+        for x in taskJobsAssigned:
+          proc = procpool.apply_async(func=doSync,args=(x,))
+          jobs.append(proc)
+    time.sleep(1)
+
+
         
 
 
