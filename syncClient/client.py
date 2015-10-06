@@ -105,6 +105,7 @@ def doSync(syncDict):
     thebox = rawBoxes[-1]
     rsynccmd = rsync +" \""+ syncDict['file'] +"\" "+ thebox['ip'] +":"+ syncDict['destinationPath']
     try:
+      os.chdir(syncDict['path'])
       out = os.system(rsynccmd)
     except:
       print(str(sys.exc_info()))
@@ -154,6 +155,10 @@ def doMain():
   doSyncServ.start()
   clientServ.join()
   doSyncServ.join()
+
+
+if(__name__=='__main__'):
+  doMain()
 
 
 
