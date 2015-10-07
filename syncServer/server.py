@@ -14,17 +14,13 @@ import dbOuiDevices
 import dbOuiSync
 import constants
 
-dbconnDevices = dbOuiDevices.db()
-dbconnSync = dbOuiSync.db()
-rawBoxes = dbconnDevices.execute("select * from theBox",dictionary=True)
-rawTasks = dbconnSync.execute("select * from tasks",dictionary=True)
-rawTaskJobs = dbconnSync.execute("select * from taskJobs",dictionary=True)
-
 
 
 
 
 def getFreeHost():
+  dbconnDevices = dbOuiDevices.db()
+  dbconnSync = dbOuiSync.db()
   freehosts = {}
   rawHosts = dbconnSync.execute("select * from hosts where enabled = "+ str(constants.ouiSync_hosts_enabled_enabled) +" and isAlive = "+ constants.ouiSync_hosts_isAlive_online +" and cpuFree > 0 order by weight desc",dictionary=True)
   if(not isinstance(rawHosts, int)):
@@ -35,6 +31,8 @@ def getFreeHost():
 
 
 def assignHosts():
+  dbconnDevices = dbOuiDevices.db()
+  dbconnSync = dbOuiSync.db()
   freehosts = getFreeHosts()
   if(freehosts):
     pendingTasks = dbconnSync.execute("select * from taskJobs where status = "+ str(constants.ouiSync_taskJobs_status_pending) +" order by priority desc",dictionary=True)
