@@ -29,9 +29,9 @@ class myfile(File):
     File.__init__(self,*args)
 
   def getChild(self, name, request):
-    print(request.getClientIP() +" : in getChild : "+ str(name) +":"+ str(request))
+    print(request.getClientIP() +" : in getChild : "+ str(name) +" : "+ str(request))
     # print(dir(request))
-    print(request.getClientIP() +" : "+ request.URLPath())
+    print(str(request.getClientIP()) +" : "+ str(request.URLPath()))
     if(request.getClientIP() in clientsAllowed.keys()):
       test = File.getChild(self,name,request)
       print(request.getClientIP() +" : "+ str(test))
