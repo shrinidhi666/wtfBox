@@ -16,6 +16,47 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `hosts`
+--
+
+DROP TABLE IF EXISTS `hosts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `hosts` (
+  `id` varchar(192) NOT NULL,
+  `ip` varchar(12) NOT NULL DEFAULT '127.0.0.1',
+  `isAlive` int(1) NOT NULL DEFAULT '0' COMMENT '0-offline, 1-online',
+  `cpuTotal` int(4) NOT NULL DEFAULT '1',
+  `cpuFree` int(4) NOT NULL DEFAULT '1',
+  `isBusy` int(1) NOT NULL DEFAULT '0' COMMENT '0-idle, 1-running',
+  `enabled` int(1) NOT NULL DEFAULT '1' COMMENT '0-disabled, 1-enabled',
+  `weight` int(3) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `taskJobs`
+--
+
+DROP TABLE IF EXISTS `taskJobs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `taskJobs` (
+  `theBoxId` varchar(192) NOT NULL,
+  `checksum` varchar(192) NOT NULL,
+  `file` varchar(2048) NOT NULL,
+  `status` int(1) NOT NULL DEFAULT '0' COMMENT '0 - pending, 1 - assigned, 2 - running, 3 - done',
+  `path` varchar(2048) NOT NULL,
+  `destinationPath` varchar(2048) NOT NULL,
+  `hostId` varchar(192) DEFAULT NULL,
+  `priority` int(8) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`theBoxId`,`checksum`),
+  CONSTRAINT `fk_taskJobs_1` FOREIGN KEY (`theBoxId`) REFERENCES `tasks` (`theBoxId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `tasks`
 --
 
@@ -24,10 +65,13 @@ DROP TABLE IF EXISTS `tasks`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tasks` (
   `theBoxId` varchar(192) NOT NULL,
-  `path` varchar(45) NOT NULL,
+  `path` varchar(2048) NOT NULL,
   `transportType` varchar(45) DEFAULT NULL,
   `status` int(1) NOT NULL DEFAULT '0' COMMENT '0-pending,1-active,2-done,3-fail',
-  `syncHost` varchar(192) NOT NULL DEFAULT 'localhost'
+  `syncHost` varchar(192) NOT NULL DEFAULT 'localhost',
+  `priority` int(11) NOT NULL DEFAULT '1',
+  `destinationPath` varchar(2048) NOT NULL,
+  PRIMARY KEY (`theBoxId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -40,4 +84,4 @@ CREATE TABLE `tasks` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-09-30  6:35:33
+-- Dump completed on 2015-10-17 10:19:58

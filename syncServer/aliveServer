@@ -12,13 +12,12 @@ import argparse
 class updateAlive(Resource):
   isLeaf = True
   def render(self, request):
-
-    return "<html>UPDATED!</html>"
+    return "UPDATED!"
 
 class kickbutt(Resource):
   isLeaf = True
   def render(self, request):
-    return "<html>NOT ALLOWED!</html>"
+    return "NOT ALLOWED!"
 
 
 class listenAlive(Resource):
