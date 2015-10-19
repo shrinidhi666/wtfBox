@@ -22,7 +22,9 @@ def getFreeHost():
   dbconnDevices = dbOuiDevices.db()
   dbconnSync = dbOuiSync.db()
   freehosts = {}
-  rawHosts = dbconnSync.execute("select * from hosts where enabled = "+ str(constants.ouiSync_hosts_enabled_enabled) +" and isAlive = "+ constants.ouiSync_hosts_isAlive_online +" and cpuFree > 0 order by weight desc",dictionary=True)
+  rawHosts = dbconnSync.execute("select * from hosts where enabled = "+ str(constants.ouiSync_hosts_enabled_enabled) \
+    +" and isAlive = "+ str(constants.ouiSync_hosts_isAlive_online) \
+    +" and cpuFree > 0 order by weight desc",dictionary=True)
   if(not isinstance(rawHosts, int)):
     for x in rawHosts:
       if(x):
@@ -30,12 +32,28 @@ def getFreeHost():
   return(0)
 
 
-def assignHosts():
+
+def getHostsByLoad():
+  dbconnDevices = dbOuiDevices.db()
+  dbconnSync = dbOuiSync.db()
+  freehosts = {}
+  rawHosts = dbconnSync.execute("select * from hosts where enabled = "+ str(constants.ouiSync_hosts_enabled_enabled) \
+    +" and isAlive = "+ str(constants.ouiSync_hosts_isAlive_online) \
+    +" and load1 < cpuFree order by weight desc,load1 desc",dictionary=True)
+  if(not isinstance(rawHosts, int)):
+    for x in rawHosts:
+      if(x):
+        return(x)
+  return(0)
+
+
+
+def assignHosts(theBoxId):
   dbconnDevices = dbOuiDevices.db()
   dbconnSync = dbOuiSync.db()
   freehosts = getFreeHosts()
   if(freehosts):
-    pendingTasks = dbconnSync.execute("select * from taskJobs where status = "+ str(constants.ouiSync_taskJobs_status_pending) +" order by priority desc",dictionary=True)
+    pendingTasks = dbconnSync.execute("select * from taskJobs where theBoxId = '"+ str(theBoxId).rstrip().lstrip() +"' and status = "+ str(constants.ouiSync_taskJobs_status_pending) +" order by priority desc",dictionary=True)
     if(not isinstance(pendingTasks, int)):
       for x in pendingTasks:
         if(x):

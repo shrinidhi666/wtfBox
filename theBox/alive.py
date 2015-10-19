@@ -10,7 +10,8 @@ headers = {}
 headers['user-agent'] = "theBox-v1.0"
 boxid = snowflake.snowflake()
 serverHost = "http://127.0.0.1/ALIVE"
-timepinged = 0
+timeToWait = 60
+timeInformed = 0
 
 def getPublicIP():
   p = subprocess.Popen(['dig','+short','myip123.opendns.com','@resolver1.opendns.com'],stdout=subprocess.PIPE)
@@ -46,13 +47,12 @@ def informServer():
 
 while(True):
   time.sleep(1)
-  a = getPublicIP()
-  if(a):
-    informServer()
-    t = time.time()
+  if((time.time() - timeInformed) > timeToWait):
+    a = getPublicIP()
+    if(a):
+      informServer()
+      timeInformed = time.time()
 
 
 
  
-print(getPublicIP())
-print(informServer())

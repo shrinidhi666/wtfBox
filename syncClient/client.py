@@ -56,23 +56,15 @@ def clientPort():
 
 
 
-def getLocalNameIP():
-  while(1):
-    try:
-      hostname = socket.gethostname()
-      ipAddr = socket.gethostbyname(socket.gethostname()).strip()
-      return(hostname,ipAddr)
-    except:
-      print(str(sys.exc_info()))
-      time.sleep(1)
 
 
-def getLocalIDIP():
+
+def getLocalHostDetails():
   while(1):
     try:
       hostid = snowflake.snowflake()
       ipAddr = socket.gethostbyname(socket.gethostname()).strip()
-      totalCpus = multiprocessing.cpu_count()
+      totalCpus = multiprocessing.cpu_count() * 3
       return(hostid,ipAddr,totalCpus)
     except:
       print(str(sys.exc_info()))
@@ -83,10 +75,12 @@ def getLocalIDIP():
 def update():
   dbconnDevices = dbOuiDevices.db()
   dbconnSync = dbOuiSync.db()
-  hostid , ip, totalCpus = getLocalIDIP()
+  hostid , ip, totalCpus = getLocalHostDetails()
+  loads = loadAvg()
   try:
     dbconnSync.execute("insert into hosts (hostid,ip,cpuTotal,isAlive) value ('"+ str(hostid).rstrip().lstrip() +"','"+ str(ip).rstrip().lstrip() +"','"+ str(totalCpus).rstrip().lstrip() +"','"+ str(constants.ouiSync_hosts_isAlive_online) +"') \
                        on duplicate key update ip='"+ str(ip).rstrip().lstrip() +"', cpuTotal='"+ str(totalCpus) +"', isAlive='"+ str(constants.ouiSync_hosts_isAlive_online) +"'")
+    dbconnSync.execute("update hosts set load1='"+ str(loads[0]).rstrip().lstrip() +"', load2 = '"+ str(loads[1]).rstrip().lstrip() +"', load3 = '"+ str(loads[2]).rstrip().lstrip()  +"' where id='"+ str(hostid) +"'")
   except:
     print(str(sys.exc_info()))
 
@@ -94,11 +88,12 @@ def update():
 def doSync(syncDict):
   dbconnDevices = dbOuiDevices.db()
   dbconnSync = dbOuiSync.db()
-  hostid , ip, totalCpus = getLocalIDIP()
+  hostid , ip, totalCpus = getLocalHostDetails()
   try:
     dbconnSync.execute("update taskJobs set status = "+ str(constants.ouiSync_taskJobs_status_running) +" where hostid = '"+ str(hostid) +"' and theBoxId = '"+ str(syncDict['theBoxId']) +"' and checksum = '"+ str(syncDict['checksum']) +"'")
   except:
     print(str(sys.exc_info()))
+    return(0)
 
   rawBoxes = dbconnDevices.execute("select * from theBox where id='"+ str(syncDict['theBoxId']) +"'",dictionary=True)
   if(not isinstance(rawBoxes,int)):
@@ -109,16 +104,35 @@ def doSync(syncDict):
       out = os.system(rsynccmd)
     except:
       print(str(sys.exc_info()))
+      return(0)
     try:
       dbconnSync.execute("update taskJobs set status = "+ str(constants.ouiSync_taskJobs_status_done) +" where theBoxId = '"+ str(syncDict['theBoxId']) +"' and checksum = '"+ str(syncDict['checksum']) +"'")
     except:
       print(str(sys.exc_info()))
+      return(0)
     try:
       dbconnSync.execute("update hosts set cpuFree = cpuFree+1 where id = '"+ str(hostid) +"'")
     except:
       print(str(sys.exc_info()))
+      return(0)
     print("exit status of the sync : "+ str(out))
-    
+  return(1)
+
+
+
+def loadAvg():
+  loads = ['0','0','0']
+  try:
+    loadFile = open("/proc/loadavg","r")
+    load = loadFile.readline()
+    loadFile.close()
+    loads = []
+    loads = load.split()
+  except:
+    print(str(sys.exc_info()))
+  return(loads)
+
+
 
 
 
@@ -128,7 +142,7 @@ def doSync(syncDict):
 def doSyncProcess():
   dbconnDevices = dbOuiDevices.db()
   dbconnSync = dbOuiSync.db()
-  hostid , ip, totalCpus = getLocalIDIP()
+  hostid , ip, totalCpus = getLocalHostDetails()
   procpool = Pool(processes=int(totalCpus))
   jobs = []
   while (1):
