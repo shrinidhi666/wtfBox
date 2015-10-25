@@ -29,7 +29,7 @@ class updateAlive(Resource):
         return "SYNC_INIT_PASS"
       else:
         return "SYNC_INIT_FAIL"
-      
+
       return "UPDATE_PASS!"
     else:
       return "UPDATE_FAIL"
@@ -43,6 +43,8 @@ class updateAlive(Resource):
     except:
       print(str(sys.exc_info()))
       return(0)
+    try:
+    
     return(1)
 
 
@@ -74,12 +76,10 @@ class listenAlive(Resource):
   #   print("----------------------")
   #   print(request.getClientIP() +" : "+ str(request.getAllHeaders()))
   #   print("----------------------")
-    
+
 def httpServer():
 
   res = listenAlive()
   factory = Site(res)
   reactor.listenTCP(80, factory)
   reactor.run()
-
-

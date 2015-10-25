@@ -17,6 +17,7 @@ ouiSync_hosts_enabled_enabled = 1
 ouiSync_hosts_enabled_disabled = 0
 
 ouiSync_clientListenPort = 8895
+rsync = "rsync -v --relative --recursive --append --inplace --checksum --copy-links --xattrs --perms --progress --rsh=/usr/bin/ssh"
 
-
-
+theBoxUserName  = "pi"
+backendServer = "192.168.1.2"

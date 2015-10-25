@@ -66,12 +66,12 @@ class myfile(File):
     f.flush()
     f.close()
 
-     
+
 
 
 
 if(args.rootPath):
-  res = myfile(args.rootPath)   
+  res = myfile(args.rootPath)
 else:
   res = myfile("./")
 factory = Site(res)
