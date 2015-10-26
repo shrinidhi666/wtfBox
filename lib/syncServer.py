@@ -5,9 +5,9 @@ import argparse
 
 
 
-dirSelf = os.path.dirname(os.path.realpath(__file__))
-libDir = dirSelf.rstrip(os.sep).rstrip("syncServer").rstrip(os.sep) + os.sep + "lib"
-sys.path.append(libDir)
+# dirSelf = os.path.dirname(os.path.realpath(__file__))
+# libDir = dirSelf.rstrip(os.sep).rstrip("syncServer").rstrip(os.sep) + os.sep + "lib"
+# sys.path.append(libDir)
 # print("lib : "+ libDir)
 
 import dbOuiDevices
@@ -65,11 +65,7 @@ def assignHosts(theBoxId):
             return(0)
           return(1)
 
-def doMain():
-  while (1):
-    assignHosts()
-    time.sleep(0.2)
-    
+
 
 
 

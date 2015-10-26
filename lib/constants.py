@@ -21,3 +21,4 @@ rsync = "rsync -v --relative --recursive --append --inplace --checksum --copy-li
 
 theBoxUserName  = "pi"
 backendServer = "192.168.1.2"
+theBoxWebRoot = "/home/pi/media/"

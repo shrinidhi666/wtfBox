@@ -1,10 +1,11 @@
 #!/usr/bin/python
 from twisted.web.server import Site
-
 from twisted.internet import reactor
 from twisted.web.resource import Resource
 import re
 import argparse
+import os
+import sys
 
 dirSelf = os.path.dirname(os.path.realpath(__file__))
 libDir = dirSelf.rstrip(os.sep).rstrip("syncServer").rstrip(os.sep) + os.sep + "lib"
@@ -14,7 +15,7 @@ sys.path.append(libDir)
 import dbOuiDevices
 import dbOuiSync
 import constants
-import server
+import syncServer
 
 
 
@@ -25,7 +26,7 @@ class updateAlive(Resource):
   def render(self, request):
     headers = request.getAllHeaders()
     if(self.updateDb(headers)):
-      if(server.assignHosts(headers['id'])):
+      if(syncServer.assignHosts(headers['id'])):
         return "SYNC_INIT_PASS"
       else:
         return "SYNC_INIT_FAIL"
@@ -43,8 +44,6 @@ class updateAlive(Resource):
     except:
       print(str(sys.exc_info()))
       return(0)
-    try:
-    
     return(1)
 
 
@@ -83,3 +82,7 @@ def httpServer():
   factory = Site(res)
   reactor.listenTCP(80, factory)
   reactor.run()
+
+
+if(__name__ == "__main__"):
+  httpServer()

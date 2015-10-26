@@ -7,6 +7,8 @@ import snowflake
 import multiprocessing
 from multiprocessing import Pool
 import time
+import subprocess
+import requests
 
 
 dirSelf = os.path.dirname(os.path.realpath(__file__))
@@ -16,13 +18,12 @@ sys.path.append(libDir)
 
 import dbOuiDevices
 import dbOuiSync
-import constants 
+import constants
 
 
 # rawTasks = dbconnSync.execute("select * from tasks",dictionary=True)
 # rawTaskJobs = dbconnSync.execute("select * from taskJobs",dictionary=True)
 
-rsync = "rsync -v --relative --recursive --append --inplace --checksum --copy-links --xattrs --perms --progress --rsh=/usr/bin/ssh"
 #--delete-after
 
 def clientPort():
@@ -51,14 +52,6 @@ def clientPort():
     clientSocket.close()
 
 
-
-
-
-
-
-
-
-
 def getLocalHostDetails():
   while(1):
     try:
@@ -69,7 +62,6 @@ def getLocalHostDetails():
     except:
       print(str(sys.exc_info()))
       time.sleep(1)
-
 
 
 def update():
@@ -98,25 +90,37 @@ def doSync(syncDict):
   rawBoxes = dbconnDevices.execute("select * from theBox where id='"+ str(syncDict['theBoxId']) +"'",dictionary=True)
   if(not isinstance(rawBoxes,int)):
     thebox = rawBoxes[-1]
-    rsynccmd = rsync +" \""+ syncDict['file'] +"\" "+ thebox['ip'] +":"+ syncDict['destinationPath']
+    rsynccmd = constants.rsync +" \""+ syncDict['file'] +"\" "+ thebox['ip'] +":"+ syncDict['destinationPath']
     try:
       os.chdir(syncDict['path'])
-      out = os.system(rsynccmd)
+      out = subprocess.Popen(rsynccmd,shell=True)
     except:
       print(str(sys.exc_info()))
-      return(0)
-    try:
-      dbconnSync.execute("update taskJobs set status = "+ str(constants.ouiSync_taskJobs_status_done) +" where theBoxId = '"+ str(syncDict['theBoxId']) +"' and checksum = '"+ str(syncDict['checksum']) +"'")
-    except:
-      print(str(sys.exc_info()))
-      return(0)
+    while(True):
+      boxAlive = checkClient(thebox["ip"])
+      if(boxAlive == 0):
+        try:
+          out.terminate()
+        except:
+          pass
+      exitcode = out.poll()
+      if(exitcode != None):
+        if(exitcode == 0):
+          try:
+            dbconnSync.execute("update taskJobs set status = "+ str(constants.ouiSync_taskJobs_status_done) +" where theBoxId = '"+ str(syncDict['theBoxId']) +"' and checksum = '"+ str(syncDict['checksum']) +"'")
+          except:
+            print(str(sys.exc_info()))
+        else:
+          try:
+            dbconnSync.execute("update taskJobs set status = "+ str(constants.ouiSync_taskJobs_status_pending) +" where theBoxId = '"+ str(syncDict['theBoxId']) +"' and checksum = '"+ str(syncDict['checksum']) +"'")
+          except:
+            print(str(sys.exc_info()))
+      time.sleep(5)
     try:
       dbconnSync.execute("update hosts set cpuFree = cpuFree+1 where id = '"+ str(hostid) +"'")
     except:
       print(str(sys.exc_info()))
-      return(0)
-    print("exit status of the sync : "+ str(out))
-  return(1)
+  return(0)
 
 
 
@@ -131,12 +135,6 @@ def loadAvg():
   except:
     print(str(sys.exc_info()))
   return(loads)
-
-
-
-
-
-
 
 
 def doSyncProcess():
@@ -157,7 +155,16 @@ def doSyncProcess():
     time.sleep(1)
 
 
-        
+def checkClient(ip):
+  try:
+    requests.get("http://"+ ip +"/ALIVE",timeout=1)
+  except:
+    return(0)
+  return(1)
+
+  
+
+
 
 
 
@@ -173,8 +180,3 @@ def doMain():
 
 if(__name__=='__main__'):
   doMain()
-
-
-
-
-
