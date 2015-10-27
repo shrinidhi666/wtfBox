@@ -7,6 +7,7 @@ import re
 import argparse
 import os
 import json
+import sys
 
 
 dirSelf = os.path.dirname(os.path.realpath(__file__))
