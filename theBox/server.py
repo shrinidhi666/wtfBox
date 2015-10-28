@@ -28,6 +28,7 @@ class Registered(Resource):
     request.responseHeaders.addRawHeader(b"content-type", b"application/json")
     f = open(constants.theBoxWebRoot +"list.json","r")
     json.load(s,encoding="utf-8")
+    f.close()
     return(json.load(s,encoding="utf-8"))
 
 class NotRegistered(Resource):
