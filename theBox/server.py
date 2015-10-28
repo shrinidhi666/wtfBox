@@ -49,7 +49,7 @@ class myfile(File):
     print(request.getClientIP() +" : in getChild : "+ str(name) +" : "+ str(request))
     # print(dir(request))
     print(str(request.getClientIP()) +" : "+ str(request.URLPath()))
-    if(request.getAllHeaders()['DEVICEID'] in clientsAllowed.keys()):
+    if(str(request.getClientIP()) in clientsAllowed.values()):
       return(File.getChild(self,name,request))
     elif(re.search('^/REGISTER',request.uri)):
       self.saveUserDetails(request)
@@ -75,7 +75,7 @@ class myfile(File):
     userdata['EMAIL'] = heads['EMAIL']
     userdata['PHONE'] = heads['PHONE']
     userdata['DEVICEID'] = heads['DEVICEID']
-    clientsAllowed[heads['DEVICEID']] = 1
+    clientsAllowed[heads['DEVICEID']] = str(request.getClientIP())
     f = open(constants.theBoxUserSave + heads['DEVICEID'],"w")
     json.dump(userdata,f,encoding="utf-8")
     f.flush()
