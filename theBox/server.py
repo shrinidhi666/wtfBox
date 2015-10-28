@@ -21,7 +21,6 @@ parser.add_argument("-p","--path",dest='rootPath',help='root dir of http server'
 args = parser.parse_args()
 
 clientsAllowed = {}
-userSavePath = "/home/pi/users/"
 
 class Registered(Resource):
   isLeaf = True
@@ -77,7 +76,7 @@ class myfile(File):
     userdata['PHONE'] = heads['PHONE']
     userdata['DEVICEID'] = heads['DEVICEID']
     clientsAllowed[heads['DEVICEID']] = 1
-    f = open(userSavePath + heads['DEVICEID'],"w")
+    f = open(constants.theBoxUserSave + heads['DEVICEID'],"w")
     json.dump(userdata,f,encoding="utf-8")
     f.flush()
     f.close()
@@ -89,7 +88,7 @@ class myfile(File):
 if(args.rootPath):
   res = myfile(args.rootPath)
 else:
-  res = myfile("./")
+  res = myfile(constants.theBoxWebRoot)
 factory = Site(res)
 reactor.listenTCP(80, factory)
 reactor.run()
