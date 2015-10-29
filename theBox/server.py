@@ -21,16 +21,27 @@ parser.add_argument("-p","--path",dest='rootPath',help='root dir of http server'
 args = parser.parse_args()
 
 clientsAllowed = {}
+try:
+  os.makedirs(constants.theBoxUserSave)
+except:
+  pass
+
+
+
+if(args.rootPath):
+  theRoot = args.rootPath
+else:
+  theRoot = constants.theBoxWebRoot
 
 class Registered(Resource):
   isLeaf = True
   def render_GET(self, request):
-    request.responseHeaders.addRawHeader(b"content-type", b"application/json")
-    f = open(constants.theBoxWebRoot +"list.json","r")
-    json.load(s,encoding="utf-8")
+    request.responseHeaders.addRawHeader("content-type", "application/json")
+    f = open(theRoot +"/list.json","rb")
+    j = json.load(f,encoding="utf-8")
     f.close()
-    return(json.load(s,encoding="utf-8"))
-
+    return(j)
+    
 class NotRegistered(Resource):
   isLeaf = True
   def render_GET(self, request):
@@ -72,24 +83,23 @@ class myfile(File):
   def saveUserDetails(self,request):
     heads = request.getAllHeaders()
     userdata = {}
-    userdata['USER'] = heads['USER']
-    userdata['EMAIL'] = heads['EMAIL']
-    userdata['PHONE'] = heads['PHONE']
-    userdata['DEVICEID'] = heads['DEVICEID']
-    clientsAllowed[heads['DEVICEID']] = str(request.getClientIP())
-    f = open(constants.theBoxUserSave + heads['DEVICEID'],"w")
+    userdata['user'] = heads['user']
+    userdata['email'] = heads['email']
+    userdata['phone'] = heads['phone']
+    userdata['deviceid'] = heads['deviceid']
+    clientsAllowed[heads['deviceid']] = str(request.getClientIP())
+    f = open(constants.theBoxUserSave + heads['deviceid'],"w")
     json.dump(userdata,f,encoding="utf-8")
     f.flush()
     f.close()
+    
 
 
 
 
 
-if(args.rootPath):
-  res = myfile(args.rootPath)
-else:
-  res = myfile(constants.theBoxWebRoot)
-factory = Site(res)
+
+rootsite = myfile(theRoot)
+factory = Site(rootsite)
 reactor.listenTCP(80, factory)
 reactor.run()
