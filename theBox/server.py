@@ -36,11 +36,12 @@ else:
 class Registered(Resource):
   isLeaf = True
   def render_GET(self, request):
-    request.responseHeaders.addRawHeader("content-type", "application/json")
-    f = open(theRoot +"/list.json","rb")
-    j = json.load(f,encoding="utf-8")
+    request.responseHeaders.setRawHeaders("content-type", ["application/json",])
+    f = open(theRoot +"/list.json","r")
+    a = f.read()
+    # j = json.load(f,encoding="utf-8")
     f.close()
-    return(j)
+    return(a)
     
 class NotRegistered(Resource):
   isLeaf = True
@@ -92,7 +93,7 @@ class myfile(File):
     json.dump(userdata,f,encoding="utf-8")
     f.flush()
     f.close()
-    
+
 
 
 
