@@ -5,11 +5,18 @@ import snowflake
 import subprocess
 import time
 
+dirSelf = os.path.dirname(os.path.realpath(__file__))
+libDir = dirSelf.rstrip(os.sep).rstrip("theBox").rstrip(os.sep) + os.sep + "lib"
+sys.path.append(libDir)
+
+import constants
+
+
 hostname = "google.com" #example
 headers = {}
 headers['user-agent'] = "theBox-v1.0"
 boxid = snowflake.snowflake()
-serverHost = "http://127.0.0.1/ALIVE"
+serverHost = "http://"+ constants.backendServer +"/ALIVE"
 timeToWait = 60
 timeInformed = 0
 
@@ -29,14 +36,6 @@ def setBoxDetails():
   headers['ip'] = getPublicIP()
   headers['id'] = boxid
 
-
-
-def ping():
-  response = os.system("ping -c 1 -W 8 " + hostname)
-  if(response == 0):
-    informServer()
-  else:
-    print("server down") 
 
 
 def informServer():
