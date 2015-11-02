@@ -14,7 +14,7 @@ timeToWait = 60
 timeInformed = 0
 
 def getPublicIP():
-  p = subprocess.Popen(['dig','+short','myip123.opendns.com','@resolver1.opendns.com'],stdout=subprocess.PIPE)
+  p = subprocess.Popen(['dig','+short','myip.opendns.com','@resolver1.opendns.com'],stdout=subprocess.PIPE)
   t = p.communicate()
   p.wait()
   if(t):
