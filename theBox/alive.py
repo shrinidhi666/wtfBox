@@ -4,6 +4,7 @@ import requests
 import snowflake
 import subprocess
 import time
+import sys
 
 dirSelf = os.path.dirname(os.path.realpath(__file__))
 libDir = dirSelf.rstrip(os.sep).rstrip("theBox").rstrip(os.sep) + os.sep + "lib"
