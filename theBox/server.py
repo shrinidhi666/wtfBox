@@ -8,6 +8,7 @@ import argparse
 import os
 import json
 import sys
+import multiprocessing
 
 
 dirSelf = os.path.dirname(os.path.realpath(__file__))
@@ -65,7 +66,9 @@ class myfile(File):
     if(str(request.getClientIP()) in clientsAllowed.values()):
       return(File.getChild(self,name,request))
     elif(re.search('^/REGISTER',request.uri)):
-      self.saveUserDetails(request)
+      p = Process(target=self.saveUserDetails, args=(request,))
+      p.start()
+      # self.saveUserDetails(request)
       return(Registered())
     elif(re.search('^/ALIVE',request.uri)):
       return(iAmAlive())
