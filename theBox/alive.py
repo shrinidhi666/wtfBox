@@ -47,7 +47,6 @@ def informServer():
 
 while(True):
   try:
-    time.sleep(5)
     if((time.time() - timeInformed) > timeToWait):
       a = getPublicIP()
       if(a):
@@ -55,6 +54,8 @@ while(True):
         timeInformed = time.time()
   except:
     print(str(sys.exc_info()))
+
+  time.sleep(5)
 
 
 
