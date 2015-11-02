@@ -25,7 +25,10 @@ class updateAlive(Resource):
   isLeaf = True
   def render(self, request):
     headers = request.getAllHeaders()
-    if(self.updateDb(headers)):
+    dbupdate = 0
+
+    # dbupdate = self.updateDb(headers)
+    if(dbupdate):
       if(syncServer.assignHosts(headers['id'])):
         return "SYNC_INIT_PASS"
       else:

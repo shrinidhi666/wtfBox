@@ -46,12 +46,15 @@ def informServer():
   
 
 while(True):
-  time.sleep(1)
-  if((time.time() - timeInformed) > timeToWait):
-    a = getPublicIP()
-    if(a):
-      informServer()
-      timeInformed = time.time()
+  try:
+    time.sleep(1)
+    if((time.time() - timeInformed) > timeToWait):
+      a = getPublicIP()
+      if(a):
+        informServer()
+        timeInformed = time.time()
+  except:
+    print(str(sys.exc_info()))
 
 
 
