@@ -18,7 +18,7 @@ headers = {}
 headers['user-agent'] = "theBox-v1.0"
 boxid = snowflake.snowflake()
 serverHost = "http://"+ constants.backendServer +"/ALIVE"
-timeToWait = 60
+timeToWait = 30
 timeInformed = 0
 
 def getPublicIP():
@@ -47,7 +47,7 @@ def informServer():
 
 while(True):
   try:
-    time.sleep(1)
+    time.sleep(5)
     if((time.time() - timeInformed) > timeToWait):
       a = getPublicIP()
       if(a):
