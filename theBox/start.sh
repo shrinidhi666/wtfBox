@@ -1,3 +1,4 @@
 #!/bin/bash
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-printf(DIR)
+${DIR}/alive.py &
+${DIR}/server.py &
