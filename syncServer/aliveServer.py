@@ -26,7 +26,7 @@ class updateAlive(Resource):
   isLeaf = True
   def render(self, request):
     headers = request.getAllHeaders()
-    theboxp = multiprocessing.Process(self.updateTheBox, args=(headers,))
+    theboxp = multiprocessing.Process(target=self.updateTheBox, args=(headers,))
     theboxp.start()
     return "UPDATED"
 
