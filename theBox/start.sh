@@ -1,6 +1,6 @@
 #!/bin/bash
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
+/sbin/fsck.vfat -a /dev/sda1
 sleep 10
 killall pppd
 sleep 5 
