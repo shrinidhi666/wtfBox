@@ -34,7 +34,7 @@ class updateAlive(Resource):
     dbconn = dbOuiDevices.db()
     try:
       dbconn.execute("insert into theBox (id,ip,isAlive) values \
-        ('"+ str(headers['id']).rstrip().lstrip() +"'"+ str(headers['ip']).rstrip().lstrip() +"'"+ str(1) +"') \
+        ('"+ str(headers['id']).rstrip().lstrip() +"','"+ str(headers['ip']).rstrip().lstrip() +"','"+ str(1) +"') \
         on duplicate key update ip='"+ str(headers['ip']).rstrip().lstrip() +"', isAlive='"+ str(1) +"'")
     except:
       print(str(sys.exc_info()))
