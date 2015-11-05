@@ -115,6 +115,12 @@ def doSync(syncDict):
             dbconnSync.execute("update taskJobs set status = "+ str(constants.ouiSync_taskJobs_status_pending) +" where theBoxId = '"+ str(syncDict['theBoxId']) +"' and checksum = '"+ str(syncDict['checksum']) +"'")
           except:
             print(str(sys.exc_info()))
+
+          try:
+            dbconnDevices.execute("update theBox set status = "+ str(constants.ouiDevices_theBox_isAlive_offline) +" where id = '"+ str(thebox['id']) +"'")
+          except:
+            print(str(sys.exc_info()))
+
       time.sleep(5)
     try:
       dbconnSync.execute("update hosts set cpuFree = cpuFree+1 where id = '"+ str(hostid) +"'")

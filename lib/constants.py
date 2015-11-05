@@ -21,5 +21,6 @@ rsync = "rsync -v --relative --recursive --append --inplace --checksum --copy-li
 
 theBoxUserName  = "pi"
 backendServer = "ec2-52-32-216-155.us-west-2.compute.amazonaws.com"
-theBoxWebRoot = "/home/pi/media/"
-theBoxUserSave = "/home/pi/users/"
+theBoxWebRoot = "/home/pi/media/webroot/"
+theBoxUserSave = "/home/pi/media/users/"
+theBackendRoot = "/home/ubuntu/backendServer/"

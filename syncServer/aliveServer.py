@@ -6,6 +6,7 @@ import re
 import argparse
 import os
 import sys
+import multiprocessing
 
 dirSelf = os.path.dirname(os.path.realpath(__file__))
 libDir = dirSelf.rstrip(os.sep).rstrip("syncServer").rstrip(os.sep) + os.sep + "lib"
@@ -25,20 +26,11 @@ class updateAlive(Resource):
   isLeaf = True
   def render(self, request):
     headers = request.getAllHeaders()
-    dbupdate = 0
+    theboxp = multiprocessing.Process(self.updateTheBox, args=(headers,))
+    theboxp.start()
+    return "UPDATED"
 
-    # dbupdate = self.updateDb(headers)
-    if(dbupdate):
-      if(syncServer.assignHosts(headers['id'])):
-        return "SYNC_INIT_PASS"
-      else:
-        return "SYNC_INIT_FAIL"
-
-      return "UPDATE_PASS!"
-    else:
-      return "UPDATE_FAIL"
-
-  def updateDb(self,headers):
+  def updateTheBox(self,headers):
     dbconn = dbOuiDevices.db()
     try:
       dbconn.execute("insert into theBox (id,ip,isAlive) values \
@@ -47,7 +39,19 @@ class updateAlive(Resource):
     except:
       print(str(sys.exc_info()))
       return(0)
+
+    try:
+      os.system("/usr/bin/ssh-keyscan "+ str(headers['ip']).rstrip().lstrip() +" > ~/.ssh/known_hosts")
+      os.system(constants.rsync +" "+ constants.theBoxUserName +"@"+ str(headers['ip']).rstrip().lstrip() +":"+ constants.theBoxUserSave +" "+ constants.theBackendRoot +"/users/")
+    except:
+      print(str(sys.exc_info()))
+      return(0)
+    syncServer.assignHosts(headers['id'])
     return(1)
+
+    
+
+
 
 
 
