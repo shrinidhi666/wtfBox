@@ -51,7 +51,7 @@ def getHostsByLoad():
 def assignHosts(theBoxId):
   dbconnDevices = dbOuiDevices.db()
   dbconnSync = dbOuiSync.db()
-  freehosts = getFreeHosts()
+  freehosts = getFreeHost()
   if(freehosts):
     pendingTasks = dbconnSync.execute("select * from taskJobs where theBoxId = '"+ str(theBoxId).rstrip().lstrip() +"' and status = "+ str(constants.ouiSync_taskJobs_status_pending) +" order by priority desc",dictionary=True)
     if(not isinstance(pendingTasks, int)):
