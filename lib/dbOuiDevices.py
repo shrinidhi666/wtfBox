@@ -6,7 +6,7 @@ import time
 
 
 
-dbHostname = "blues2"
+dbHostname = "localhost"
 dbPort = "3306"
 dbDatabase = "ouiDevices"
 
