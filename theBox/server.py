@@ -67,7 +67,7 @@ class myfile(File):
     if(str(request.getClientIP()) in clientsAllowed.values()):
       return(File.getChild(self,name,request))
     elif(re.search('^/REGISTER',request.uri)):
-      p = Process(target=self.saveUserDetails, args=(request,))
+      p = multiprocessing.Process(target=self.saveUserDetails, args=(request,))
       p.start()
       # self.saveUserDetails(request)
       return(Registered())
