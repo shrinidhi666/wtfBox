@@ -24,9 +24,15 @@ except:
   pass
 
 if(sys.platform.find("win") >= 0):
-  username = os.environ['USERNAME']
+  try:
+    username = os.environ['USERNAME']
+  except:
+    username = "nobody"
 if(sys.platform.find("linux") >= 0):
-  username = os.environ['USER']
+  try:
+    username = os.environ['USER']
+  except:
+    username = "nobody"
 
 class db:
   """database querying class for rbhus"""
