@@ -70,7 +70,7 @@ def update():
   hostid , ip, totalCpus = getLocalHostDetails()
   loads = loadAvg()
   try:
-    dbconnSync.execute("insert into hosts (hostid,ip,cpuTotal,isAlive) value ('"+ str(hostid).rstrip().lstrip() +"','"+ str(ip).rstrip().lstrip() +"','"+ str(totalCpus).rstrip().lstrip() +"','"+ str(constants.ouiSync_hosts_isAlive_online) +"') \
+    dbconnSync.execute("insert into hosts (id,ip,cpuTotal,isAlive) value ('"+ str(hostid).rstrip().lstrip() +"','"+ str(ip).rstrip().lstrip() +"','"+ str(totalCpus).rstrip().lstrip() +"','"+ str(constants.ouiSync_hosts_isAlive_online) +"') \
                        on duplicate key update ip='"+ str(ip).rstrip().lstrip() +"', cpuTotal='"+ str(totalCpus) +"', isAlive='"+ str(constants.ouiSync_hosts_isAlive_online) +"'")
     dbconnSync.execute("update hosts set load1='"+ str(loads[0]).rstrip().lstrip() +"', load2 = '"+ str(loads[1]).rstrip().lstrip() +"', load3 = '"+ str(loads[2]).rstrip().lstrip()  +"' where id='"+ str(hostid) +"'")
   except:
