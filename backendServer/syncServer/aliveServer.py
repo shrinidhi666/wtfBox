@@ -43,8 +43,8 @@ class updateAlive(Resource):
     try:
       print("/usr/bin/ssh-keyscan "+ str(headers['ip']).rstrip().lstrip() +" >> ~/.ssh/known_hosts")
       os.system("/usr/bin/ssh-keyscan "+ str(headers['ip']).rstrip().lstrip() +" >> ~/.ssh/known_hosts")
-      print(constants.rsync +" "+ constants.theBoxUserName +"@"+ str(headers['ip']).rstrip().lstrip() +":"+ constants.theBoxUserSave +" "+ constants.theBackendRoot +"/users/")
-      os.system(constants.rsync +" "+ constants.theBoxUserName +"@"+ str(headers['ip']).rstrip().lstrip() +":"+ constants.theBoxUserSave +" "+ constants.theBackendRoot +"/users/")
+      print(constants.rsync +" "+ constants.theBoxUserName +"@"+ str(headers['ip']).rstrip().lstrip() +":"+ constants.theBoxUserSave +" "+ constants.theBackendRootUsers)
+      os.system(constants.rsync +" "+ constants.theBoxUserName +"@"+ str(headers['ip']).rstrip().lstrip() +":"+ constants.theBoxUserSave +" "+ constants.theBackendRootUsers)
     except:
       print(str(sys.exc_info()))
       return(0)

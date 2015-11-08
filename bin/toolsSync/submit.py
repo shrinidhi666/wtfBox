@@ -64,7 +64,7 @@ else:
     if(found == True):
       if(args.path):
         if(args.destpath):
-          getFiles(args.path,args.destpath,args.boxid)
+          # getFiles(args.path,args.destpath,args.boxid)
           try:
             dbconnSync.execute("insert into tasks (theBoxId,path,destinationpath) value ('"+ str(args.boxid).rstrip().lstrip() +"','"+ str(args.path).rstrip().lstrip() +"','"+ str(args.destpath).rstrip().lstrip() +"')")
           except:
