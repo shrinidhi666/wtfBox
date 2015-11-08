@@ -39,7 +39,7 @@ def getHostsByLoad():
   freehosts = {}
   rawHosts = dbconnSync.execute("select * from hosts where enabled = "+ str(constants.ouiSync_hosts_enabled_enabled) \
     +" and isAlive = "+ str(constants.ouiSync_hosts_isAlive_online) \
-    +" and load1 < cpuFree order by weight desc,load1 desc",dictionary=True)
+    +" and load1 < cpuTotal order by weight desc,load1 desc",dictionary=True)
   if(not isinstance(rawHosts, int)):
     for x in rawHosts:
       if(x):
