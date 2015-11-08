@@ -24,7 +24,7 @@ DROP TABLE IF EXISTS `hosts`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `hosts` (
   `id` varchar(192) NOT NULL,
-  `ip` varchar(12) NOT NULL DEFAULT '127.0.0.1',
+  `ip` varchar(16) NOT NULL DEFAULT '127.0.0.1',
   `isAlive` int(1) NOT NULL DEFAULT '0' COMMENT '0-offline, 1-online',
   `cpuTotal` int(4) NOT NULL DEFAULT '1',
   `cpuFree` int(4) NOT NULL DEFAULT '1',
@@ -87,4 +87,4 @@ CREATE TABLE `tasks` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-11-05  7:10:00
+-- Dump completed on 2015-11-08 17:47:07
