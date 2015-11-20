@@ -67,9 +67,9 @@ class myfile(File):
     if(str(request.getClientIP()) in clientsAllowed.values()):
       return(File.getChild(self,name,request))
     elif(re.search('^/REGISTER',request.uri)):
-      p = multiprocessing.Process(target=self.saveUserDetails, args=(request,))
-      p.start()
-      # self.saveUserDetails(request)
+      # p = multiprocessing.Process(target=self.saveUserDetails, args=(request,))
+      # p.start()
+      self.saveUserDetails(request)
       return(Registered())
     elif(re.search('^/ALIVE',request.uri)):
       return(iAmAlive())
