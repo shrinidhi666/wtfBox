@@ -23,6 +23,7 @@ parser.add_argument("-p","--path",dest='rootPath',help='root dir of http server'
 args = parser.parse_args()
 
 clientsAllowed = {}
+clientsAccessed = {}
 try:
   os.makedirs(constants.theBoxUserSave)
 except:
@@ -55,6 +56,17 @@ class iAmAlive(Resource):
   def render_GET(self, request):
     return("ALIVE")
 
+class RegisterForPlay(Resource):
+  isLeaf = True
+  def render_GET(self,request):
+    return("REGISTERED FOR PLAY")
+
+class NotRegisterForPlay(Resource):
+  isLeaf = True
+  def render_GET(self,request):
+    return("NOT REGISTERED FOR PLAY")
+
+
 
 class myfile(File):
   def __init__(self,*args):
@@ -64,6 +76,7 @@ class myfile(File):
     print(request.getClientIP() +" : in getChild : "+ str(name) +" : "+ str(request))
     # print(dir(request))
     print(str(request.getClientIP()) +" : "+ str(request.URLPath()))
+    clientsAccessed[]
     if(str(request.getClientIP()) in clientsAllowed.values()):
       return(File.getChild(self,name,request))
     elif(re.search('^/REGISTER',request.uri)):
@@ -71,11 +84,20 @@ class myfile(File):
       # p.start()
       self.saveUserDetails(request)
       return(Registered())
+    elif(re.search('^/PLAY',request.uri)):
+      if(str(request.getClientIP()) in clientsAllowed.values()):
+        self.savePlayDetails(request)
+        return(RegisterForPlay())
+      else:
+        return(NotRegistered())
     elif(re.search('^/ALIVE',request.uri)):
       return(iAmAlive())
     else:
       return(NotRegistered())
 
+
+  
+  
 
   def render_GET(self,request):
     print("----------------------")
@@ -95,6 +117,18 @@ class myfile(File):
     clientsAllowed[heads['deviceid']] = str(request.getClientIP())
     f = open(constants.theBoxUserSave + heads['deviceid'],"w")
     json.dump(userdata,f,encoding="utf-8")
+    f.flush()
+    f.close()
+
+  def savePlayDetails(self,request):
+    heads = request.getAllHeaders()
+    try:
+      clientsAccessed[heads['deviceid']][heads['file']] = clientsAccessed[heads['deviceid']][heads['file']] + 1
+    except:
+      clientsAccessed[heads['deviceid']] = {}
+      clientsAccessed[heads['deviceid']][heads['file']] = 1
+    f = open(constants.theBoxUserSave + heads['deviceid'] +"_play","w")
+    json.dump(clientsAccessed[heads['deviceid']],f,encoding="utf-8")
     f.flush()
     f.close()
 
