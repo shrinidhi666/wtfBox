@@ -20,9 +20,9 @@ ouiSync_clientListenPort = 8895
 rsync = "rsync -v --recursive --append --inplace --checksum --copy-links --xattrs --perms --progress --rsh=/usr/bin/ssh"
 
 theBoxUserName  = "pi"
-backendServer = "ec2-52-76-28-153.ap-southeast-1.compute.amazonaws.com"
+backendServer = "192.155.91.56:8090"
 theBoxWebRoot = "/home/pi/media/webroot/"
 theBoxUserSave = "/home/pi/media/users/"
-theBackendRoot = "/home/ubuntu/backendServer/"
-theBackendRootMedia = "/home/ubuntu/backendServer/media/"
-theBackendRootUsers = "/home/ubuntu/backendServer/users/"
+theBackendRoot = "/home/deploy/oui/"
+theBackendRootMedia = "/home/deploy/oui/media/"
+theBackendRootUsers = "/home/deploy/oui/users/"
