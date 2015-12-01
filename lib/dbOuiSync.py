@@ -31,6 +31,10 @@ if(sys.platform.find("linux") >= 0):
 class db:
   """database querying class for rbhus"""
   def __init__(self):
+    f = open("/etc/oui/mysql.json","r")
+    a = json.loads(f.read())
+    f.close()
+    self.password = str(a['password'])
     self.__conn = self._connect()
 
   def __del__(self):
@@ -42,7 +46,7 @@ class db:
 
   def _connDb(self,hostname,port,dbname):
     try:
-      conn = MySQLdb.connect(host = hostname,port=port,db = dbname)
+      conn = MySQLdb.connect(host = hostname,port=port,db = dbname,passwd=self.password)
       conn.autocommit(1)
     except:
       raise
