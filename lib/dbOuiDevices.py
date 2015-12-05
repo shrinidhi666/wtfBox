@@ -42,6 +42,7 @@ class db:
     a = json.loads(f.read())
     f.close()
     self.password = str(a['password'])
+    print(self.password)
 
     self.__conn = self._connect()
 
