@@ -76,7 +76,7 @@ class myfile(File):
     print(request.getClientIP() +" : in getChild : "+ str(name) +" : "+ str(request))
     # print(dir(request))
     print(str(request.getClientIP()) +" : "+ str(request.URLPath()))
-    clientsAccessed[]
+
     if(str(request.getClientIP()) in clientsAllowed.values()):
       return(File.getChild(self,name,request))
     elif(re.search('^/REGISTER',request.uri)):
