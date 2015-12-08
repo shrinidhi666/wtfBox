@@ -22,7 +22,7 @@ import constants
 
 
 # rawTasks = dbconnSync.execute("select * from tasks",dictionary=True)
-# rawTaskJobs = dbconnSync.execute("select * from taskJobs",dictionary=True)
+# rawtasks = dbconnSync.execute("select * from tasks",dictionary=True)
 
 #--delete-after
 
@@ -82,7 +82,7 @@ def doSync(syncDict):
   dbconnSync = dbOuiSync.db()
   hostid , ip, totalCpus = getLocalHostDetails()
   try:
-    dbconnSync.execute("update taskJobs set status = "+ str(constants.ouiSync_taskJobs_status_running) +" where hostid = '"+ str(hostid) +"' and theBoxId = '"+ str(syncDict['theBoxId']) +"' and checksum = '"+ str(syncDict['checksum']) +"'")
+    dbconnSync.execute("update tasks set status = "+ str(constants.ouiSync_tasks_status_running) +" where hostid = '"+ str(hostid) +"' and theBoxId = '"+ str(syncDict['theBoxId']) +"' and checksum = '"+ str(syncDict['checksum']) +"'")
   except:
     print(str(sys.exc_info()))
     return(0)
@@ -90,7 +90,7 @@ def doSync(syncDict):
   rawBoxes = dbconnDevices.execute("select * from theBox where id='"+ str(syncDict['theBoxId']) +"'",dictionary=True)
   if(not isinstance(rawBoxes,int)):
     thebox = rawBoxes[-1]
-    rsynccmd = constants.rsync +" \""+ syncDict['file'] +"\" "+ thebox['ip'] +":"+ syncDict['destinationPath']
+    rsynccmd = constants.rsync +" \""+ syncDict['path'] +"\" "+ thebox['ip'] +":"+ syncDict['destinationPath']
     try:
       os.chdir(syncDict['path'])
       out = subprocess.Popen(rsynccmd,shell=True)
@@ -107,12 +107,12 @@ def doSync(syncDict):
       if(exitcode != None):
         if(exitcode == 0):
           try:
-            dbconnSync.execute("update taskJobs set status = "+ str(constants.ouiSync_taskJobs_status_done) +" where theBoxId = '"+ str(syncDict['theBoxId']) +"' and checksum = '"+ str(syncDict['checksum']) +"'")
+            dbconnSync.execute("update tasks set status = "+ str(constants.ouiSync_tasks_status_done) +" where theBoxId = '"+ str(syncDict['theBoxId']) +"'")
           except:
             print(str(sys.exc_info()))
         else:
           try:
-            dbconnSync.execute("update taskJobs set status = "+ str(constants.ouiSync_taskJobs_status_pending) +" where theBoxId = '"+ str(syncDict['theBoxId']) +"' and checksum = '"+ str(syncDict['checksum']) +"'")
+            dbconnSync.execute("update tasks set status = "+ str(constants.ouiSync_tasks_status_pending) +" where theBoxId = '"+ str(syncDict['theBoxId']) +"'")
           except:
             print(str(sys.exc_info()))
 
@@ -151,9 +151,9 @@ def doSyncProcess():
   jobs = []
   while (1):
     try:
-      taskJobsAssigned = dbconnSync.execute("select * from taskJobs where status = "+ str(constants.ouiSync_taskJobs_status_assigned) +" and hostid = '"+ str(hostid) +"'",dictionary=True)
-      if(not isinstance(taskJobsAssigned,int)):
-        for x in taskJobsAssigned:
+      tasksAssigned = dbconnSync.execute("select * from tasks where status = "+ str(constants.ouiSync_tasks_status_assigned) +" and hostid = '"+ str(hostid) +"'",dictionary=True)
+      if(not isinstance(tasksAssigned,int)):
+        for x in tasksAssigned:
           proc = procpool.apply_async(func=doSync,args=(x,))
           jobs.append(proc)
     except:

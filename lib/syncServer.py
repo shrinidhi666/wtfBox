@@ -53,12 +53,12 @@ def assignHosts(theBoxId):
   dbconnSync = dbOuiSync.db()
   freehosts = getFreeHost()
   if(freehosts):
-    pendingTasks = dbconnSync.execute("select * from taskJobs where theBoxId = '"+ str(theBoxId).rstrip().lstrip() +"' and status = "+ str(constants.ouiSync_taskJobs_status_pending) +" order by priority desc",dictionary=True)
+    pendingTasks = dbconnSync.execute("select * from tasks where theBoxId = '"+ str(theBoxId).rstrip().lstrip() +"' and status = "+ str(constants.ouiSync_taskJobs_status_pending) +" order by priority desc",dictionary=True)
     if(not isinstance(pendingTasks, int)):
       for x in pendingTasks:
         if(x):
           try:
-            dbconnSync.execute("update tasksJobs set status = "+ str(constants.ouiSync_taskJobs_status_assigned) +" , hostId = '"+ str(freehosts['id']) +"' where theBoxId = '"+ str(x['theBoxId']) +"' and checksum = '"+ str(x['checksum']) +"'")
+            dbconnSync.execute("update tasks set status = "+ str(constants.ouiSync_taskJobs_status_assigned) +" , hostId = '"+ str(freehosts['id']) +"' where theBoxId = '"+ str(x['theBoxId']) +"' and checksum = '"+ str(x['checksum']) +"'")
             dbconnSync.execute("update hosts set cpuFree = cpuFree-1 where id = '"+ str(freehosts['id']) +"'")
           except:
             print(str(sys.exc_info()))
