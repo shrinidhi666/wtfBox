@@ -122,12 +122,14 @@ class myfile(File):
 
   def savePlayDetails(self,request):
     heads = request.getAllHeaders()
-    try:
-      clientsAccessed[heads['deviceid']][heads['file']] = clientsAccessed[heads['deviceid']][heads['file']] + 1
-    except:
-      clientsAccessed[heads['deviceid']] = {}
-      clientsAccessed[heads['deviceid']][heads['file']] = 1
-    f = open(constants.theBoxUserSave + heads['deviceid'] +"_play","w")
+    for head in heads:
+      if(re.search("^access_",head)):
+        try:
+          clientsAccessed[heads['deviceid']][heads['file']] = clientsAccessed[heads['deviceid']][heads['file']] + 1
+        except:
+          clientsAccessed[heads['deviceid']] = {}
+          clientsAccessed[heads['deviceid']][heads['file']] = 1
+    f = open(constants.theBoxUserSave + heads['deviceid'] +"_play","a")
     json.dump(clientsAccessed[heads['deviceid']],f,encoding="utf-8")
     f.flush()
     f.close()

@@ -82,7 +82,7 @@ def doSync(syncDict):
   dbconnSync = dbOuiSync.db()
   hostid , ip, totalCpus = getLocalHostDetails()
   try:
-    dbconnSync.execute("update tasks set status = "+ str(constants.ouiSync_tasks_status_running) +" where hostid = '"+ str(hostid) +"' and theBoxId = '"+ str(syncDict['theBoxId']) +"' and checksum = '"+ str(syncDict['checksum']) +"'")
+    dbconnSync.execute("update tasks set status = "+ str(constants.ouiSync_tasks_status_running) +" where hostid = '"+ str(hostid) +"' and theBoxId = '"+ str(syncDict['theBoxId']) +"'")
   except:
     print(str(sys.exc_info()))
     return(0)
