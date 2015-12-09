@@ -49,7 +49,7 @@ class Registered(Resource):
 class NotRegistered(Resource):
   isLeaf = True
   def render_GET(self, request):
-    return("NOTREGISTERED")
+    return("NOT REGISTERED")
 
 class iAmAlive(Resource):
   isLeaf = True
@@ -64,7 +64,7 @@ class RegisterForPlay(Resource):
 class NotRegisterForPlay(Resource):
   isLeaf = True
   def render_GET(self,request):
-    return("NOT REGISTERED FOR PLAY")
+    return("NOT REGISTERED FOR PLAY\nREGISTER FIRST")
 
 
 
@@ -77,9 +77,8 @@ class myfile(File):
     # print(dir(request))
     print(str(request.getClientIP()) +" : "+ str(request.URLPath()))
 
-    if(str(request.getClientIP()) in clientsAllowed.values()):
-      return(File.getChild(self,name,request))
-    elif(re.search('^/REGISTER',request.uri)):
+
+    if(re.search('^/REGISTER',request.uri)):
       # p = multiprocessing.Process(target=self.saveUserDetails, args=(request,))
       # p.start()
       self.saveUserDetails(request)
@@ -89,11 +88,14 @@ class myfile(File):
         self.savePlayDetails(request)
         return(RegisterForPlay())
       else:
-        return(NotRegistered())
+        return(NotRegisterForPlay())
     elif(re.search('^/ALIVE',request.uri)):
       return(iAmAlive())
     else:
-      return(NotRegistered())
+      if(str(request.getClientIP()) in clientsAllowed.values()):
+        return(File.getChild(self,name,request))
+      else:
+        return(NotRegistered())
 
 
   
@@ -115,20 +117,20 @@ class myfile(File):
     userdata['phone'] = heads['phone']
     userdata['deviceid'] = heads['deviceid']
     clientsAllowed[heads['deviceid']] = str(request.getClientIP())
-    f = open(constants.theBoxUserSave + heads['deviceid'],"w")
+    f = open(constants.theBoxUserSave + heads['deviceid'],"a")
     json.dump(userdata,f,encoding="utf-8")
     f.flush()
     f.close()
 
   def savePlayDetails(self,request):
     heads = request.getAllHeaders()
-    for head in heads:
-      if(re.search("^access_",head)):
+    for head in heads.keys():
+      if(re.search("^access-",head)):
         try:
-          clientsAccessed[heads['deviceid']][heads['file']] = clientsAccessed[heads['deviceid']][heads['file']] + 1
+          clientsAccessed[heads['deviceid']][head] = [heads[head]]
         except:
           clientsAccessed[heads['deviceid']] = {}
-          clientsAccessed[heads['deviceid']][heads['file']] = 1
+          clientsAccessed[heads['deviceid']][head] = [heads[head]]
     f = open(constants.theBoxUserSave + heads['deviceid'] +"_play","a")
     json.dump(clientsAccessed[heads['deviceid']],f,encoding="utf-8")
     f.flush()
