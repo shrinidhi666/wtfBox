@@ -74,6 +74,7 @@ CREATE TABLE `tasks` (
   `syncHost` varchar(192) NOT NULL DEFAULT 'localhost',
   `priority` int(11) NOT NULL DEFAULT '1',
   `destinationPath` varchar(2048) NOT NULL,
+  `hostId` varchar(192) NOT NULL DEFAULT 'localhost',
   PRIMARY KEY (`theBoxId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -87,4 +88,4 @@ CREATE TABLE `tasks` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-11-08 17:47:07
+-- Dump completed on 2015-12-09 16:56:13
