@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="589cd4b9-0d3a-4e8f-ae78-aa85918e98c7" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/backendServer/syncServer/webServer.py" afterPath="$PROJECT_DIR$/backendServer/syncServer/webServer.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/constants.py" afterPath="$PROJECT_DIR$/lib/constants.py" />
     </list>
     <ignored path="wtfBox.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -73,11 +73,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="constants.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="constants.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib/constants.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="24" column="33" selection-start-line="24" selection-start-column="33" selection-end-line="24" selection-end-column="33" />
+            <state vertical-scroll-proportion="0.38751346">
+              <caret line="24" column="26" selection-start-line="24" selection-start-column="26" selection-end-line="24" selection-end-column="26" />
               <folding />
             </state>
           </provider>
@@ -93,10 +93,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="webServer.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="webServer.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/backendServer/syncServer/webServer.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.11302476">
+            <state vertical-scroll-proportion="0.0">
               <caret line="16" column="23" selection-start-line="16" selection-start-column="23" selection-end-line="16" selection-end-column="23" />
               <folding />
             </state>
@@ -141,10 +141,10 @@
         <option value="$PROJECT_DIR$/backendServer/start.sh" />
         <option value="$PROJECT_DIR$/lib/syncServer.py" />
         <option value="$PROJECT_DIR$/backendServer/syncClient/client.py" />
-        <option value="$PROJECT_DIR$/lib/constants.py" />
         <option value="$PROJECT_DIR$/testing/androidClientTest.py" />
         <option value="$PROJECT_DIR$/theBox/server.py" />
         <option value="$PROJECT_DIR$/backendServer/syncServer/webServer.py" />
+        <option value="$PROJECT_DIR$/lib/constants.py" />
       </list>
     </option>
   </component>
@@ -718,14 +718,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/constants.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="24" column="33" selection-start-line="24" selection-start-column="33" selection-end-line="24" selection-end-column="33" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/testing/androidClientTest.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -752,8 +744,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/backendServer/syncServer/webServer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.11302476">
+        <state vertical-scroll-proportion="0.0">
           <caret line="16" column="23" selection-start-line="16" selection-start-column="23" selection-end-line="16" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/constants.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.38751346">
+          <caret line="24" column="26" selection-start-line="24" selection-start-column="26" selection-end-line="24" selection-end-column="26" />
           <folding />
         </state>
       </provider>

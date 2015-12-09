@@ -21,8 +21,8 @@ rsync = "rsync -v --recursive --append --inplace --checksum --copy-links --xattr
 
 theBoxUserName  = "pi"
 backendServer = "192.155.91.56:8090"
-theBoxWebRoot = "/home/shrinidhi/media/webroot/"
-theBoxUserSave = "/home/shrinidhi/media/users/"
+theBoxWebRoot = "/home/pi/media/webroot/"
+theBoxUserSave = "/home/pi/media/users/"
 theBackendRoot = "/home/deploy/oui/"
 theBackendRootMedia = "/home/deploy/oui/media/"
 theBackendRootUsers = "/home/deploy/oui/users/"
