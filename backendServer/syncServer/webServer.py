@@ -13,7 +13,7 @@ import multiprocessing
 
 
 dirSelf = os.path.dirname(os.path.realpath(__file__))
-libDir = dirSelf.rstrip(os.sep).rstrip("theBox").rstrip(os.sep) + os.sep + "lib"
+libDir = dirSelf.rstrip(os.sep).rstrip("syncServer").rstrip(os.sep).rstrip("backendServer").rstrip(os.sep) + os.sep + "lib"
 sys.path.append(libDir)
 
 import constants
