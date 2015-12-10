@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="589cd4b9-0d3a-4e8f-ae78-aa85918e98c7" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/constants.py" afterPath="$PROJECT_DIR$/lib/constants.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/syncServer.py" afterPath="$PROJECT_DIR$/lib/syncServer.py" />
     </list>
     <ignored path="wtfBox.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -33,21 +33,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="client.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="client.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/backendServer/syncClient/client.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.67814857">
+            <state vertical-scroll-proportion="0.0">
               <caret line="153" column="96" selection-start-line="153" selection-start-column="96" selection-end-line="153" selection-end-column="96" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="syncServer.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="syncServer.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib/syncServer.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="60" column="44" selection-start-line="60" selection-start-column="44" selection-end-line="60" selection-end-column="44" />
+            <state vertical-scroll-proportion="0.4679634">
+              <caret line="60" column="91" selection-start-line="60" selection-start-column="91" selection-end-line="60" selection-end-column="91" />
               <folding />
             </state>
           </provider>
@@ -56,8 +56,8 @@
       <file leaf-file-name="server.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/theBox/server.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="23.0">
-              <caret line="51" column="16" selection-start-line="0" selection-start-column="0" selection-end-line="148" selection-end-column="0" />
+            <state vertical-scroll-proportion="-30.571428">
+              <caret line="139" column="0" selection-start-line="139" selection-start-column="0" selection-end-line="139" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -139,12 +139,12 @@
         <option value="$PROJECT_DIR$/lib/dbOuiSync.py" />
         <option value="$PROJECT_DIR$/backendServer/syncServer/web_server.py" />
         <option value="$PROJECT_DIR$/backendServer/start.sh" />
-        <option value="$PROJECT_DIR$/lib/syncServer.py" />
         <option value="$PROJECT_DIR$/testing/androidClientTest.py" />
         <option value="$PROJECT_DIR$/theBox/server.py" />
         <option value="$PROJECT_DIR$/backendServer/syncServer/webServer.py" />
         <option value="$PROJECT_DIR$/backendServer/syncClient/client.py" />
         <option value="$PROJECT_DIR$/lib/constants.py" />
+        <option value="$PROJECT_DIR$/lib/syncServer.py" />
       </list>
     </option>
   </component>
@@ -598,7 +598,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="5" column="12" selection-start-line="5" selection-start-column="12" selection-end-line="5" selection-end-column="12" />
           <folding>
-            <element signature="e#0#14#0" expanded="true" />
+            <element signature="e#0#14#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -663,7 +663,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="41" column="8" selection-start-line="41" selection-start-column="8" selection-end-line="41" selection-end-column="8" />
           <folding>
-            <element signature="e#0#14#0" expanded="true" />
+            <element signature="e#0#14#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -673,7 +673,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="5" column="12" selection-start-line="5" selection-start-column="12" selection-end-line="5" selection-end-column="12" />
           <folding>
-            <element signature="e#0#14#0" expanded="true" />
+            <element signature="e#0#14#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -690,14 +690,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="2" column="8" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/theBox/server.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="23.0">
-          <caret line="51" column="16" selection-start-line="0" selection-start-column="0" selection-end-line="148" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -734,10 +726,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/syncServer.py">
+    <entry file="file://$PROJECT_DIR$/backendServer/syncClient/client.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="60" column="44" selection-start-line="60" selection-start-column="44" selection-end-line="60" selection-end-column="44" />
+          <caret line="153" column="96" selection-start-line="153" selection-start-column="96" selection-end-line="153" selection-end-column="96" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/theBox/server.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-30.571428">
+          <caret line="139" column="0" selection-start-line="139" selection-start-column="0" selection-end-line="139" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -750,10 +750,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/backendServer/syncClient/client.py">
+    <entry file="file://$PROJECT_DIR$/lib/syncServer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.67814857">
-          <caret line="153" column="96" selection-start-line="153" selection-start-column="96" selection-end-line="153" selection-end-column="96" />
+        <state vertical-scroll-proportion="0.4679634">
+          <caret line="60" column="91" selection-start-line="60" selection-start-column="91" selection-end-line="60" selection-end-column="91" />
           <folding />
         </state>
       </provider>
