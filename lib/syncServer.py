@@ -58,7 +58,7 @@ def assignHosts(theBoxId):
       for x in pendingTasks:
         if(x):
           try:
-            dbconnSync.execute("update tasks set status = "+ str(constants.ouiSync_tasks_status_assigned) +" , hostId = '"+ str(freehosts['id']) +"' where theBoxId = '"+ str(x['theBoxId']) +"' and checksum = '"+ str(x['checksum']) +"'")
+            dbconnSync.execute("update tasks set status = "+ str(constants.ouiSync_tasks_status_assigned) +" , hostId = '"+ str(freehosts['id']) +"' where theBoxId = '"+ str(x['theBoxId']) +"'")
             dbconnSync.execute("update hosts set cpuFree = cpuFree-1 where id = '"+ str(freehosts['id']) +"'")
           except:
             print(str(sys.exc_info()))
