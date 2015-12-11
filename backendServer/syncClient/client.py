@@ -90,7 +90,7 @@ def doSync(syncDict):
   rawBoxes = dbconnDevices.execute("select * from theBox where id='"+ str(syncDict['theBoxId']) +"'",dictionary=True)
   if(not isinstance(rawBoxes,int)):
     thebox = rawBoxes[-1]
-    rsynccmd = constants.rsync +" \""+ syncDict['path'] +"\" "+ thebox['ip'] +":"+ syncDict['destinationPath']
+    rsynccmd = constants.rsync +" \""+ syncDict['path'] +"\" "+ str(constants.theBoxUserName) +"@"+ thebox['ip'] +":"+ syncDict['destinationPath']
     try:
       os.chdir(syncDict['path'])
       out = subprocess.Popen(rsynccmd,shell=True)
