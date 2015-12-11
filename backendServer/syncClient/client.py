@@ -120,6 +120,7 @@ def doSync(syncDict):
             dbconnDevices.execute("update theBox set isAlive = "+ str(constants.ouiDevices_theBox_isAlive_offline) +" where id = '"+ str(thebox['id']) +"'")
           except:
             print(str(sys.exc_info()))
+        break
 
       time.sleep(5)
     try:
