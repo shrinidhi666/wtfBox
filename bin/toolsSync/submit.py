@@ -51,11 +51,11 @@ def getFiles(path,destpath,theBoxId):
 if(args.islist):
   if(not isinstance(rawSyncs,int)):
     for x in rawSyncs:
-  	 print(str(x['theBoxId']) +":"+ str(x['path']))
+  	 print(str(x['theBoxId']) +" : "+ str(x['path']))
 elif(args.islistbox):
   if(not isinstance(rawBoxes,int)):
     for x in rawBoxes:
-      print(str(x['id']).rstrip().lstrip() +":"+ str(x['clientNodeId']).rstrip().lstrip() +":"+ str(x['ip']).rstrip().lstrip() +":"+ str(x['isOnline']).rstrip().lstrip())
+      print(str(x['id']).rstrip().lstrip() +" : "+ str(x['clientNodeId']).rstrip().lstrip() +":"+ str(x['ip']).rstrip().lstrip() +":"+ str(x['isOnline']).rstrip().lstrip())
 else:
   if(args.boxid):
     found = False
