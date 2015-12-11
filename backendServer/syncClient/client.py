@@ -117,7 +117,7 @@ def doSync(syncDict):
             print(str(sys.exc_info()))
 
           try:
-            dbconnDevices.execute("update theBox set status = "+ str(constants.ouiDevices_theBox_isAlive_offline) +" where id = '"+ str(thebox['id']) +"'")
+            dbconnDevices.execute("update theBox set isAlive = "+ str(constants.ouiDevices_theBox_isAlive_offline) +" where id = '"+ str(thebox['id']) +"'")
           except:
             print(str(sys.exc_info()))
 
