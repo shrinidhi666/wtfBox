@@ -12,9 +12,8 @@ libDir = dirSelf.rstrip(os.sep).rstrip("toolsSync").rstrip(os.sep).rstrip("bin")
 sys.path.append(libDir)
 # print("lib : "+ libDir)
 
-import dbOuiDevices
 import dbOuiSync
-import sha512sum
+import constants
 
 
 parser = argparse.ArgumentParser()
