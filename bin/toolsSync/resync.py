@@ -33,6 +33,6 @@ if(args.islist):
   	 print(str(x['theBoxId']) +" : "+ str(x['path']))
 elif(args.boxid):
   try:
-    dbconnSync.execute("update tasks set status = if(status = "+ str(constants.ouiSync_tasks_status_done) +" ,status , "+ str(constants.ouiSync_tasks_status_pending) +") where theBoxId = '"+ str(args.boxid) +"'")
+    dbconnSync.execute("update tasks set status = if(status = "+ str(constants.ouiSync_tasks_status_done) +","+ str(constants.ouiSync_tasks_status_pending) +",status) where theBoxId = '"+ str(args.boxid) +"'")
   except:
     print(sys.exc_info())
