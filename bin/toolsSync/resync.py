@@ -33,6 +33,7 @@ if(args.islist):
   	 print(str(x['theBoxId']) +" : "+ str(x['path']))
 elif(args.boxid):
   try:
+    print("updating the resync")
     dbconnSync.execute("update tasks set status = "+ str(constants.ouiSync_tasks_status_pending) +" where theBoxId = '"+ str(args.boxid).lstrip().rstrip() +"'")
   except:
     print(sys.exc_info())
