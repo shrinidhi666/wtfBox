@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="589cd4b9-0d3a-4e8f-ae78-aa85918e98c7" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/backendServer/syncClient/client.py" afterPath="$PROJECT_DIR$/backendServer/syncClient/client.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/toolsSync/submit.py" afterPath="$PROJECT_DIR$/bin/toolsSync/submit.py" />
     </list>
     <ignored path="wtfBox.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -33,10 +33,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="client.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="client.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/backendServer/syncClient/client.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.66200215">
+            <state vertical-scroll-proportion="0.0">
               <caret line="92" column="146" selection-start-line="92" selection-start-column="146" selection-end-line="92" selection-end-column="146" />
               <folding />
             </state>
@@ -83,13 +83,13 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="submit.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="submit.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/bin/toolsSync/submit.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="40" column="40" selection-start-line="40" selection-start-column="40" selection-end-line="40" selection-end-column="40" />
+            <state vertical-scroll-proportion="0.016146393">
+              <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
               <folding>
-                <element signature="e#18#27#0" expanded="true" />
+                <element signature="e#19#28#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -147,6 +147,7 @@
         <option value="$PROJECT_DIR$/lib/constants.py" />
         <option value="$PROJECT_DIR$/lib/syncServer.py" />
         <option value="$PROJECT_DIR$/backendServer/syncClient/client.py" />
+        <option value="$PROJECT_DIR$/bin/toolsSync/submit.py" />
       </list>
     </option>
   </component>
@@ -626,7 +627,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="2" column="8" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="8" />
           <folding>
-            <element signature="e#18#27#0" expanded="true" />
+            <element signature="e#19#28#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -714,16 +715,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bin/toolsSync/submit.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="40" column="40" selection-start-line="40" selection-start-column="40" selection-end-line="40" selection-end-column="40" />
-          <folding>
-            <element signature="e#18#27#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/theBox/start.sh">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-8.653846">
@@ -766,9 +757,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/backendServer/syncClient/client.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.66200215">
+        <state vertical-scroll-proportion="0.0">
           <caret line="92" column="146" selection-start-line="92" selection-start-column="146" selection-end-line="92" selection-end-column="146" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bin/toolsSync/submit.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.016146393">
+          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+          <folding>
+            <element signature="e#19#28#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
